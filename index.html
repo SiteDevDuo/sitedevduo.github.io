@@ -1,7 +1,31 @@
 <html>
-    <head></head>
-    <body>
+    <head>
+        <style>
+            @keyframes death {
+                0% {
+                    background-color: white;
+                    transform: rotateZ(0deg) scale(1);
+                }
+                100% {
+                    background-color: red;
+                    transform: rotateZ(1800deg) scale(0.001);
+                }
+            }
+            .killed {
+                animation-duration: 30s;
+                animation-name: death;
+                animation-fill-mode: forwards;
+            }
+            .killed * {
+                animation-duration: 30s;
+                animation-name: death;
+                animation-fill-mode: forwards;
+            }
+        </style>
+    </head>
+    <body id="body">
         <h1>In Development</h1>
-        <h3>Is Being Made M0Reza and Jefferson</h3>
+        <h3>Is Being Made By M0Reza and Jefferson</h3>
+        <button onclick="document.getElementById('body').className = 'killed'">Kill M0Reza :)</button>
     </body>
 </html>
