@@ -1,0 +1,201 @@
+<html>
+    <head>
+        <title>Merge Game</title>
+        <style>
+            .darktheme {
+                transition: 500ms;
+                background-color: rgb(10,10,10);
+            }
+            .whitetheme {
+                transition: 500ms;
+                background-color: rgb(245,245,245);
+            }
+            .sidepart {
+                left: 0%;
+                top: 0%;
+                position: absolute;
+                width: 25%;
+                height: 100%;
+                background-color: gray;
+                display: flexbox;
+                border-right: 0.5vw solid darkgray; 
+            }
+            .mergepart {
+                left: 25.5%;
+                top: 0%;
+                position: absolute;
+                width: 74.5%;
+                height: 100%;
+            }
+            .nav {
+                position: absolute;
+                left: 92%;
+                width: 8%;
+                height: 100%;
+                top: 0%;
+                background-color: gray;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav button {
+                margin: auto;
+                background-color: black;
+                color: white;
+                border-radius: 100%;
+                width: 50px;
+                height: 50px;
+                border: 2px solid white;
+                transition: 250ms;
+            }
+            .nav button:hover {
+                transition: 250ms;
+                border: 3px solid darkgray;
+                
+            }
+            .nav button:active {
+                transition: 250ms;
+                border: 4px solid rgb(100,100,100);
+            }
+            .nav button i {
+                margin: auto;
+            }
+            .element {
+                background-color: rgb(50,50,50);
+                color: white;
+                border-radius: 50px;
+                height: 20px;
+                text-align: center;
+                padding: 5px;
+                margin: 5px;
+                display:inline-block;
+                cursor: hand;
+            }
+            .element * {
+                cursor: hand;
+            }
+            .Draggable {
+                position: absolute;
+                transform: translateX(-50%) translateY(-50%);
+            }
+        </style>
+        <link href='https://unpkg.com/css.gg@2.0.0/icons/css/sun.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script>
+            enter = `
+            `.replaceAll(" ","")
+            function ReplaceAll(array,x,y) {
+                for (let i = 0; i < array.length; i++) {
+                    array[i] = array[i].replaceAll(x,y)
+                } return array
+            }
+            function SplitAll(array,x) {
+                for (let i = 0; i < array.length; i++) {
+                    array[i] = array[i].split(x)
+                } return array
+            }
+            function dataconversion(ourstring) {
+                return SplitAll(ReplaceAll(ourstring.replace(enter,"").split(enter)," + "," = ")," = ")
+            }
+        </script>
+        <script src="items.js"></script>
+        <script>
+            SelectedElem = ""
+            m = 0
+            recipes = dataconversion(recipes)
+            function FindItem(string,array) {
+                for (let i = 0; i < array.length; i++) {
+                    if (array[i].startsWith(string)) {
+                        return i
+                    }
+                }
+            }
+            function CraftItem(e1, e2) {
+                console.log("C")
+                for (let i = 0; i < recipes.length; i++) {
+                    t = FindItem(recipes[i][0],items)
+                    if ((recipes[i][1] == e1 && recipes[i][2] == e2) || (recipes[i][2] == e1 && recipes[i][1] == e2)) {
+                        if (items[t].endsWith("(discovered)") == false)
+                            items[t] += " (discovered)"
+                        refreshthings()
+                    }
+                }
+            }
+            function CheckArea(name) {
+                document.getElementById(name).style.left.replace("px","") + "," + document.getElementById(name).style.top.replace("px","")
+                c = document.getElementById("merge").childNodes
+                for (let i = 1; i < document.getElementById("merge").childElementCount; i++) {
+                    e = c.item(i)
+                    if (e.id != name) { 
+                        if (Math.abs(parseInt(document.getElementById(name).style.left.replace("px",""))-parseInt(e.style.left.replace("px",""))) < 20 && Math.abs(parseInt(document.getElementById(name).style.top.replace("px",""))-parseInt(e.style.top.replace("px",""))) < 20) {
+                            CraftItem(e.textContent,document.getElementById(name).textContent)
+                            e.remove(); document.getElementById(name).remove()
+                        }
+                    }
+                }
+            }
+            function CreateElement(n) {
+                b = document.getElementById(`InventoryElement-${n}`).textContent
+                c = document.getElementById(`InventoryElement-${n}`).cloneNode()
+                c.textContent = b
+                c.className = "Draggable element"
+                c.id = `MergeElement-${n}-${m}`
+                c.setAttribute("onclick",`if (SelectedElem == '') SelectedElem = "MergeElement-${n}-${m}"; else {SelectedElem = ""; CheckArea("MergeElement-${n}-${m}")}`)
+                SelectedElem = `MergeElement-${n}-${m}`
+                document.getElementById("merge").append(c)
+                m+=1
+            }
+            function AddElement(name,num) {
+                a = document.createElement("p")
+                a.textContent = name
+                a.className = "element"
+                a.style = `width: ${name.length+5}ch`
+                a.setAttribute("onclick",`CreateElement(${num})`)
+                a.id = `InventoryElement-${num}`
+                document.getElementById("discovered").append(a)
+            }
+            function ChildTransferToSomeWhereGood(element) {
+                a = element.childElementCount
+                if (element.hasChildNodes()) {
+                    for (let i = 0; i < a; i++) {
+                        element.childNodes.item(a-i-1).remove()
+                    }
+                }
+            }
+            function refreshthings() {
+                ChildTransferToSomeWhereGood(document.getElementById("discovered")) // dude like wtf am I supposed to name it its your fault for naming it child wtf
+                AddedElementCount = 0
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].endsWith(" (discovered)")) {
+                        AddElement(items[i].replaceAll(" (discovered)",""),AddedElementCount)
+                        AddedElementCount++
+                    }
+                }
+            }
+            currenttheme = false
+            items = items.replace(enter,"").split(enter)
+            setTimeout(()=>{
+                items[FindItem("Time",items)] += " (discovered)"
+                refreshthings()
+            },120000)
+        </script>
+    </head>
+    <body class="whitetheme">
+        <div class="sidepart" id="discovered"></div>
+        <div class="mergepart" id="merge">
+        </div>
+        <div class="nav">
+            <button onclick="if (currenttheme) document.body.className = `whitetheme`; else document.body.className = `darktheme`; currenttheme = !currenttheme"><i class="gg-sun"></i></button>
+            <button onclick="alert(`Fully Made by Jefferson & M0Reza\nUsed Resources: Icons from FontAwesome & css.gg`)" style="width: 60px;">Credit</button>
+            <button onclick="m = 0; SelectedElem = ''; ChildTransferToSomeWhereGood(document.getElementById(`merge`))"><i class="fa fa-trash-o" style="font-size: xx-large;"></i></button>
+        </div>
+        <script>
+            addEventListener("mousemove",(mos) => {
+                swidth = window.innerWidth
+                if (SelectedElem != "")
+                    document.getElementById(SelectedElem).style = document.getElementById(SelectedElem).getAttribute("style").split(";")[0] + `;left:${mos.clientX-swidth*0.255}; top:${mos.clientY}`
+            })
+            refreshthings()
+        </script>
+    </body>
+</html>
