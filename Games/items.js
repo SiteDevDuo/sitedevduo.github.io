@@ -18,6 +18,7 @@ Fish
 Bird
 Worm
 Demon
+Devil
 Grand soul
 Corruption
 Death
@@ -37,8 +38,7 @@ Wind
 Tornado
 Cloud
 Nether
-Hell
-`
+Hell`
 
 recipes = `
 Lava = Earth + Fire
