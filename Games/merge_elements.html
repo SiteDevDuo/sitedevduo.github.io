@@ -127,7 +127,7 @@
                 for (let i = 1; i < document.getElementById("merge").childElementCount; i++) {
                     e = c.item(i)
                     if (e.id != name) { 
-                        if (Math.abs(parseInt(document.getElementById(name).style.left.replace("px",""))-parseInt(e.style.left.replace("px",""))) < 20 && Math.abs(parseInt(document.getElementById(name).style.top.replace("px",""))-parseInt(e.style.top.replace("px",""))) < 20) {
+                        if (Math.abs(parseInt(document.getElementById(name).style.left.replace("px",""))-parseInt(e.style.left.replace("px",""))) < 50 && Math.abs(parseInt(document.getElementById(name).style.top.replace("px",""))-parseInt(e.style.top.replace("px",""))) < 50) {
                             CraftItem(e.textContent,document.getElementById(name).textContent)
                             e.remove(); document.getElementById(name).remove()
                         }
