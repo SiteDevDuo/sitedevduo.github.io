@@ -268,7 +268,6 @@
             function simplifysaveddata() {
                 return JSON.stringify(gatheritems(true)) + "|x+x|" + JSON.stringify(gatherrecipes())
             }
-            prompt()
         </script>
     </head>
     <body>
@@ -277,8 +276,8 @@
                 <button onclick="loaddefaults()">Load Default Items</button>
                 <button onclick="loadcustom(prompt(`paste item code:`))">Load Custom Items</button>
                 <button onclick="navigator.clipboard.writeText(simplifysaveddata()); alert(`copied the item code`)">Save Items</button>
+                <button onclick="if (confirm(`Progress is not saved in order to save them\nuse Save Items and go to game and use Load Custom\nContinue?`)) window.location.href=`https://sitedevduo.github.io/Games/merge_elements`">Return to Game</button>
             </div>
-            <button onclick="if (confirm(`Progress is not saved in order to save them\nuse Save Items and go to game and use Load Custom\nContinue?`)) window.location.href=`https://sitedevduo.github.io/Games/merge_elements`">Return to Game</button>
         </div>
         <div class="items" id="items">
             <div class="buttons" id="itemsbuttons"><button class="addbutton" onclick="additem(``,false)">+</button></div>
