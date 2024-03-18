@@ -38,7 +38,15 @@ Wind
 Tornado
 Cloud
 Nether
-Hell`
+Ice
+Hell
+Freeze
+Heat
+Energy
+Rain
+Hail
+M0Reza
+Revive`
 
 recipes = `
 Lava = Earth + Fire
@@ -84,4 +92,15 @@ Tornado = Wind + Wind
 Cloud = Wind + Steam
 Nether = Obsidian + Fire
 Hell = Devil + Nether
+Ice = Water + Cold air
+Freeze = Cold air + Cold air
+Heat = Hot air + Hot air
+Energy = Heat + Freeze
+Rain = Cloud + Freeze
+Hail = Rain + Freeze
+M0Reza = Death + Revive
+Death = Death + Life
+Revive = Death + Holy Life
+M0Reza = M0Reza + Death
+M0Reza = M0Reza + Revive
 `

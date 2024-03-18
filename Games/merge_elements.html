@@ -2,6 +2,9 @@
     <head>
         <title>Merge Game</title>
         <style>
+            * {
+                -webkit-user-select: none
+            }
             .darktheme {
                 transition: 500ms;
                 background-color: rgb(10,10,10);
@@ -42,7 +45,7 @@
                 margin: auto;
                 background-color: black;
                 color: white;
-                border-radius: 100%;
+                border-radius: 20px;
                 width: 50px;
                 height: 50px;
                 border: 2px solid white;
@@ -78,6 +81,19 @@
                 position: absolute;
                 transform: translateX(-50%) translateY(-50%);
             }
+            .whiteexplosion {
+                width: 60px;
+                height: 60px;
+                position: absolute;
+                transform: translateX(-50%) translateY(-50%);
+            }
+            .darkexplosion {
+                position: absolute;
+                transform: translateX(-50%) translateY(-50%);
+                width: 60px;
+                height: 60px;
+                filter: invert(1);
+            }
         </style>
         <link href='https://unpkg.com/css.gg@2.0.0/icons/css/sun.css' rel='stylesheet'>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -111,29 +127,56 @@
                 }
             }
             function CraftItem(e1, e2) {
-                console.log("C")
                 for (let i = 0; i < recipes.length; i++) {
                     t = FindItem(recipes[i][0],items)
                     if ((recipes[i][1] == e1 && recipes[i][2] == e2) || (recipes[i][2] == e1 && recipes[i][1] == e2)) {
-                        if (items[t].endsWith("(discovered)") == false)
+                        if (items[t].endsWith("(discovered)") == false) {
+                            alert(`You unlocked ${items[t]}!`)
                             items[t] += " (discovered)"
+                        }
                         refreshthings()
                     }
                 }
             }
+
+            /*function Sparkle(obj1,obj2) {
+                let posx1 = parseInt(obj1.style.left.replace("px",""))
+                let posx2 = parseInt(obj2.style.left.replace("px",""))
+                let posy1 = parseInt(obj1.style.top.replace("px",""))
+                let posy2 = parseInt(obj2.style.top.replace("px",""))
+                let fposx = (posx1 + posx2)/2
+                let fposy = (posy1 + posy2)/2
+                console.log(fposx)
+                console.log(fposy)
+                let a = document.createElement("img")
+                a.src = "explosion.gif"
+                a.setAttribute("style",`left:${fposx}px; top:${fposy}px`)
+                if (currenttheme)
+                    a.className = "whiteexplosion"
+                else
+                    a.className = "darkexplosion"
+                document.getElementById("merge").append(a)
+                setTimeout(()=>{
+                    a.remove()
+                },500)
+            }*/
+            
             function CheckArea(name) {
                 document.getElementById(name).style.left.replace("px","") + "," + document.getElementById(name).style.top.replace("px","")
                 c = document.getElementById("merge").childNodes
                 for (let i = 1; i < document.getElementById("merge").childElementCount; i++) {
                     e = c.item(i)
                     if (e.id != name) { 
-                        if (Math.abs(parseInt(document.getElementById(name).style.left.replace("px",""))-parseInt(e.style.left.replace("px",""))) < 50 && Math.abs(parseInt(document.getElementById(name).style.top.replace("px",""))-parseInt(e.style.top.replace("px",""))) < 50) {
+                        if (Math.abs(parseInt(document.getElementById(name).style.left.replace("px",""))-parseInt(e.style.left.replace("px",""))) < 20 && Math.abs(parseInt(document.getElementById(name).style.top.replace("px",""))-parseInt(e.style.top.replace("px",""))) < 20) {
                             CraftItem(e.textContent,document.getElementById(name).textContent)
+                            // Sparkle(e,document.getElementById(name)) it was a bad idea to create a explosion when something is crafted -_-
                             e.remove(); document.getElementById(name).remove()
                         }
                     }
                 }
             }
+            mouseX = 0
+            mouseY = 0
             function CreateElement(n) {
                 b = document.getElementById(`InventoryElement-${n}`).textContent
                 c = document.getElementById(`InventoryElement-${n}`).cloneNode()
@@ -142,6 +185,8 @@
                 c.id = `MergeElement-${n}-${m}`
                 c.setAttribute("onclick",`if (SelectedElem == '') SelectedElem = "MergeElement-${n}-${m}"; else {SelectedElem = ""; CheckArea("MergeElement-${n}-${m}")}`)
                 SelectedElem = `MergeElement-${n}-${m}`
+                swidth = window.innerWidth
+                c.setAttribute("style",c.getAttribute("style").split(";")[0] + `;left:${mouseX-swidth*0.255}; top:${mouseY}`)
                 document.getElementById("merge").append(c)
                 m+=1
             }
@@ -171,6 +216,7 @@
                         AddedElementCount++
                     }
                 }
+                localStorage.setItem("Progress",JSON.stringify(items))
             }
             currenttheme = false
             items = items.replace(enter,"").split(enter)
@@ -189,6 +235,14 @@
                 items[FindItem(item,items)] += " (discovered)"
                 refreshthings()
             }
+            if (localStorage.getItem("Progress") == null || localStorage.getItem("Progress") == '')
+                console.log("No saved data was found")
+            else
+                items = JSON.parse(localStorage.getItem("Progress"))
+            function LoadCustom(a) {
+                items = JSON.parse(a.split("|x+x|")[0]); recipes = JSON.parse(a.split("|x+x|")[1])
+                refreshthings()
+            }
         </script>
     </head>
     <body class="whitetheme">
@@ -197,14 +251,19 @@
         </div>
         <div class="nav">
             <button onclick="if (currenttheme) document.body.className = `whitetheme`; else document.body.className = `darktheme`; currenttheme = !currenttheme"><i class="gg-sun"></i></button>
-            <button onclick="alert(`Fully Made by Jefferson & M0Reza\nUsed Resources: Icons from FontAwesome & css.gg`)" style="width: 60px;">Credit</button>
             <button onclick="m = 0; SelectedElem = ''; ChildTransferToSomeWhereGood(document.getElementById(`merge`))"><i class="fa fa-trash-o" style="font-size: xx-large;"></i></button>
+            <button onclick="alert(`Fully Made by Jefferson & M0Reza\nUsed Resources: Icons from FontAwesome & css.gg`)" style="width: 60px;">Credit</button>
+            <button onclick="localStorage.setItem(`Progress`,``); window.location.reload()" style="width: 60px;">Reset</button>
+            <button onclick="LoadCustom(prompt(`Enter item code:`))" style="width: 80px;">Load Custom</button>
+            <button onclick="window.location.href = `https://sitedevduo.github.io/Games/merge_elements_creator`" style="width: 80px;">Customize</button>
         </div>
         <script>
             addEventListener("mousemove",(mos) => {
+                mouseX = mos.clientX
+                mouseY = mos.clientY
                 swidth = window.innerWidth
                 if (SelectedElem != "")
-                    document.getElementById(SelectedElem).style = document.getElementById(SelectedElem).getAttribute("style").split(";")[0] + `;left:${mos.clientX-swidth*0.255}; top:${mos.clientY}`
+                    document.getElementById(SelectedElem).style = document.getElementById(SelectedElem).getAttribute("style").split(";")[0] + `;left:${mouseX-swidth*0.255}; top:${mouseY}`
             })
             refreshthings()
         </script>

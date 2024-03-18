@@ -1,0 +1,290 @@
+<html>
+    <head>
+        <script src="items.js"></script>
+        <style>
+            .nav {
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 10%;
+                background-color: gray;
+                display: flex;
+                align-items: baseline;
+                border-bottom: 2px solid black;
+                z-index: 4;
+            }
+            .nav div button {
+                transition: 250ms;
+                margin: auto;
+                margin-right: 20px;
+                border: 2px solid rgb(200,200,200);
+            }
+            .nav div button:hover {
+                transition: 250ms;
+                border: 2px solid rgb(100,100,100);
+            }
+            .nav div button:active {
+                transition: 250ms;
+                border: 2px solid rgb(50,50,50);
+            }
+            .nav div {
+                margin-top: auto;
+                margin-bottom: auto;
+                margin-left: 50px;
+                width: fit-content;
+            }
+            .nav div button {
+                background-color: black;
+                color: white;
+                padding: 10px;
+                border-radius: 50px;
+            }
+            .items {
+                position: absolute;
+                top:10%;
+                left: 0%;
+                width: 40%;
+                height: 90%;
+                overflow: hidden auto;
+                border-right: 2px solid black;
+                background-color: gray;
+                z-index: 3;
+            }
+            .itemname {
+                background-color: white;
+                padding: 5px;
+            }
+            .listofitems {
+                background-color: white;
+                padding: 5px;
+                width: 150px;
+            }
+            .recipes {
+                position: absolute;
+                top:10%;
+                left: 40%;
+                width: 60%;
+                height: 90%;
+                overflow: visible;
+                background-color: gray;
+                overflow: hidden auto;
+            }
+            .addbutton {
+                background-color: black;
+                color: white;
+                width: 60px;
+                height: 30px;
+                border-radius: 30px;
+                font-size: 20px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            @keyframes newone {
+                0% {
+                    transform: scaleY(0) translateY(-100%);
+                    filter: opacity(0);
+                }
+                100% {
+                    transform: scaleY(1) translateY(0px);
+                    filter: opacity(1);
+                }
+            }
+            .item {
+                animation-name: newone;
+                animation-duration: 250ms;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+                display: flex;
+                background-color: rgb(100,100,100);
+                height: 30px;
+                align-items: center;
+                padding: 20px;
+                border-bottom: 1px solid black;
+            }
+            .buttons {
+                display: flex;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+            .itemguide2 {
+                margin: auto;
+                margin-right: 0px;
+                color: lightgray;
+            }
+            .itemguide {
+                color: lightgray;
+                margin-right: 10px;
+            }
+            .equations {
+                color: lightgray;
+                margin: auto;
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+            .deletebutton {
+                transition: 250ms;
+                background-color: red;
+                margin-left: auto;
+                color:white;
+                border-radius: 5px;
+                width: 30px;
+                height: 30px;
+                border: 2px solid white;
+            }
+            .deletebutton:hover {
+                transition: 250ms;
+                background-color: darkred;
+                margin-left: auto;
+                color:darkgray;
+                border-radius: 5px;
+                width: 30px;
+                height: 30px;
+                border: 2px solid gray;
+            }
+        </style>
+        <script>
+            function deleteitem(obj) {
+                obj.parentElement.remove()
+            }
+            function additem(text,disc) {
+                let a = document.createElement("div") // putting all those things inside something ig
+                let b = document.createElement("input") // item name
+                let c = document.createElement("input") // discovered or not?
+                let d = document.createElement("p") // guide text that says item name:
+                let e = document.createElement("p") // guide text which says default item:
+                let f = document.createElement("button") // delete o button
+                a.className = "item";
+                b.className = "itemname"; b.value = text;
+                c.className = "itemdisc"; c.type = "checkbox"; c.checked = disc;
+                d.className = "itemguide"; d.textContent = "Item Name:";
+                e.className = "itemguide2"; e.textContent = "Default Item:"; e.getAttribute("onclick","alert(`If checked it will be given to player at the start of the round`)");
+                f.className = "deletebutton"; f.textContent = "X"; f.setAttribute("onclick","deleteitem(event.target)");
+                a.append(d); a.append(b); a.append(e); a.append(c); a.append(f)
+                document.getElementById("items").insertBefore(a,document.getElementById("itemsbuttons"))
+            }
+            enter = `
+            `.replaceAll(" ","")
+            function ReplaceAll(array,x,y) {
+                for (let i = 0; i < array.length; i++) {
+                    array[i] = array[i].replaceAll(x,y)
+                } return array
+            }
+            function SplitAll(array,x) {
+                for (let i = 0; i < array.length; i++) {
+                    array[i] = array[i].split(x)
+                } return array
+            }
+            function dataconversion(ourstring) {
+                return SplitAll(ReplaceAll(ourstring.replace(enter,"").split(enter)," + "," = ")," = ")
+            }
+            function gatheritems(check = false) {
+                arr = []
+                document.getElementById("items").childNodes.forEach((e)=>{
+                    if (e.className == "item") {
+                        if (check && e.childNodes.item(3).checked)
+                            arr.push(e.childNodes.item(1).value + " (discovered)")
+                        else
+                            arr.push(e.childNodes.item(1).value)
+                    }
+                }) 
+                return arr
+            }
+            function gatherrecipes() {
+                arr = []
+                document.getElementById("recipes").childNodes.forEach((e)=>{
+                    if (e.className == "item") {
+                        arr.push([e.childNodes.item(0).value,e.childNodes.item(2).value,e.childNodes.item(4).value])
+                    }
+                }) 
+                return arr
+            }
+            function smollify(array) {
+                let b = []
+                for (let i = 0; i < array.length; i++) {
+                    b[i] = array[i].toLowerCase()
+                } return b;
+            }
+            function checkifvalid(obj) {
+                let p = gatheritems()
+                if (p.includes(obj.value))
+                    return 1
+                else {
+                    if (smollify(p).includes(obj.value.toLowerCase()))
+                        obj.value = p[smollify(p).indexOf(obj.value.toLowerCase())]
+                    else
+                        alert("what you have written is not in the item list therefore\nit cannot be crafted in game!")
+                }
+            }
+            function addrecipe(text,text2,text3) {
+                let a = document.createElement("div") // putting all those things inside something ig
+                let b = document.createElement("input") // "something" = something + something
+                let c = document.createElement("input") // something = "something" + something
+                let k = document.createElement("input") // something = something + "something"
+                let d = document.createElement("p") // =
+                let e = document.createElement("p") // +
+                let f = document.createElement("button") // delete o button
+                a.className = "item";
+                b.className = "itemname"; b.value = text; b.setAttribute("onchange","checkifvalid(event.target)")
+                c.className = "itemname"; c.value = text2; c.setAttribute("onchange","checkifvalid(event.target)")
+                k.className = "itemname"; k.value = text3; k.setAttribute("onchange","checkifvalid(event.target)")
+                d.className = "equations"; d.textContent = " = ";
+                e.className = "equations"; e.textContent = " + ";
+                f.className = "deletebutton"; f.textContent = "X"; f.setAttribute("onclick","deleteitem(event.target)");
+                a.append(b); a.append(d); a.append(k); a.append(e); a.append(c); a.append(f)
+                document.getElementById("recipes").insertBefore(a,document.getElementById("recipesbuttons"))
+            }
+            function clearall() {
+                let a = document.getElementById("items")
+                let b = parseInt(a.childElementCount)
+                for (let i = 0; i < b-1; i++) {
+                    a.childNodes.item(b-i-1).remove()
+                }
+                a = document.getElementById("recipes")
+                b = parseInt(a.childElementCount)
+                for (let i = 0; i < b-1; i++) {
+                    a.childNodes.item(b-i-1).remove()
+                }
+            }
+            function loaddefaults() {
+                clearall()
+                items.replace(enter,"").split(enter).forEach((e) => {
+                    additem(e.replaceAll(" (discovered)",""),e.endsWith("(discovered)"))
+                })
+                let t = dataconversion(recipes)
+                t.pop(); t.forEach((e)=>{
+                    addrecipe(e[0],e[1],e[2])
+                })
+            }
+            function loadcustom(a) {
+                clearall(); items = JSON.parse(a.split("|x+x|")[0]); recipes = JSON.parse(a.split("|x+x|")[1])
+                items.forEach((e) => {
+                    additem(e.replaceAll(" (discovered)",""),e.endsWith("(discovered)"))
+                })
+                recipes.forEach((e)=>{
+                    addrecipe(e[0],e[1],e[2])
+                })
+            }
+            function simplifysaveddata() {
+                return JSON.stringify(gatheritems(true)) + "|x+x|" + JSON.stringify(gatherrecipes())
+            }
+            prompt()
+        </script>
+    </head>
+    <body>
+        <div class="nav">
+            <div>
+                <button onclick="loaddefaults()">Load Default Items</button>
+                <button onclick="loadcustom(prompt(`paste item code:`))">Load Custom Items</button>
+                <button onclick="navigator.clipboard.writeText(simplifysaveddata()); alert(`copied the item code`)">Save Items</button>
+            </div>
+            <button onclick="if (confirm(`Progress is not saved in order to save them\nuse Save Items and go to game and use Load Custom\nContinue?`)) window.location.href=`https://sitedevduo.github.io/Games/merge_elements`">Return to Game</button>
+        </div>
+        <div class="items" id="items">
+            <div class="buttons" id="itemsbuttons"><button class="addbutton" onclick="additem(``,false)">+</button></div>
+        </div>
+        <div class="recipes" id="recipes">
+            <div class="buttons" id="recipesbuttons"> <button class="addbutton" onclick="addrecipe('','','')">+</button></div>
+        </div>
+    </body>
+</html>
