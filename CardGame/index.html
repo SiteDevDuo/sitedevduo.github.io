@@ -16,6 +16,17 @@
                 margin: 5px;
                 border-radius: 10px;
             }
+            .rightsideoverlay, .leftsideoverlay {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+            }
+            .rightsideoverlay {
+                background-image: linear-gradient(to left,rgba(0,0,0,0.8),rgba(0,0,0,0.6));
+            }
+            .leftsideoverlay {
+                background-image: linear-gradient(to right,rgba(0,0,0,0.8),rgba(0,0,0,0.6));
+            }
             .left_offhand, .right_offhand, .left_mainhand, .right_mainhand, .left_action, .right_action {
                 position: absolute;
                 transform: translateX(-50%) translateY(-50%);
@@ -218,6 +229,18 @@
                 overflow: auto;
                 direction: rtl;
             }
+            .leftside h4, .rightside h4 {
+                position: absolute;
+                font-family: "Roboto Slab", serif;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 20px;
+                display: inline-block;
+            }
+            .leftside h4 p, .rightside h4 p {
+                font-family: "Noto Emoji", sans-serif;
+                display: inline-block;
+            }
             .leftcards::-webkit-scrollbar, .rightcards::-webkit-scrollbar {
                 background-color: black;
                 width: 10px;
@@ -264,6 +287,187 @@
             pickmeup = ""
             pickmeuplogic = false
             cardcount = 0
+            PlayerLeftHealth = 100
+            PlayerRightHealth = 100
+            if (randomize(0,1) == 1)
+                Turn = true // True means left side turn
+            else
+                Turn = false // False means right side turn
+            Step = 0
+            function applyhealth(health,damage) {
+                if (health >= damage)
+                    return [health-damage,0]
+                else
+                    return [0, damage-health]
+                }
+            Limiter = 1
+            function nextround() {
+                Step++
+                if (Step == 2 || Step == 1) {
+                    if (Turn)
+                        setTimeout(()=>{alert("Its Player 1's Turn")},1)
+                    else
+                        setTimeout(()=>{alert("Its Player 2's Turn")},1)
+                    if (Turn) {
+                        let a = document.createElement("div")
+                        a.className = "rightsideoverlay"
+                        document.getElementById("rightside").append(a)
+                        try{document.getElementsByClassName("leftsideoverlay").item(0).remove()} catch(e) {console.log(e)}
+                    } else {
+                        let a = document.createElement("div")
+                        a.className = "leftsideoverlay"
+                        document.getElementById("leftside").append(a)
+                        try{document.getElementsByClassName("rightsideoverlay").item(0).remove()} catch(e) {console.log(e)}
+                    }
+                    Limiter = 3
+                    if (StopGeneratingCards == false)
+                        document.body.append(logocard())
+                    if (Turn) Turn = false
+                    else Turn = true
+                }
+                if (Step == 3) {
+                    try {rmh = document.getElementById("right_mainhand").childNodes.item(1).childNodes.item(1)} catch(e) {console.log(e)}
+                    try {roh = document.getElementById("right_offhand").childNodes.item(1).childNodes.item(1)} catch(e) {console.log(e)}
+                    try {lmh = document.getElementById("left_mainhand").childNodes.item(1).childNodes.item(1)} catch(e) {console.log(e)}
+                    try {loh = document.getElementById("left_offhand").childNodes.item(1).childNodes.item(1)} catch(e) {console.log(e)}
+                    let leftmaindamage = 0; let leftoffdamage = 0; let rightmaindamage = 0; let rightoffdamage = 0;
+                    if (document.getElementById("left_mainhand").childElementCount > 1) {leftmaindamage = parseInt(lmh.childNodes.item(0).childNodes.item(1).textContent); }
+                    if (document.getElementById("left_offhand").childElementCount > 1) {leftoffdamage = parseInt(loh.childNodes.item(0).childNodes.item(1).textContent); }
+                    if (document.getElementById("right_mainhand").childElementCount > 1) {rightmaindamage = parseInt(rmh.childNodes.item(0).childNodes.item(1).textContent); }
+                    if (document.getElementById("right_offhand").childElementCount > 1) {rightoffdamage = parseInt(roh.childNodes.item(0).childNodes.item(1).textContent); }
+                    if (document.getElementById("left_action").childElementCount > 1) {
+                        let a = document.getElementById("left_action").childNodes.item(1).childNodes.item(0).childNodes.item(0).textContent
+                        if (a == "Barrier")
+                            PlayerLeftHealth += 20
+                        if (a == "Reverse") {
+                            leftmaindamage += rightmaindamage
+                            leftoffdamage += rightoffdamage
+                            rightmaindamage = 0
+                            rightoffdamage = 0
+                        }
+                        if (a == "Robber") {
+                            let b = roh.parentNode.cloneNode()
+                            b.innerHTML = roh.parentNode.innerHTML
+                            roh.parentNode.remove()
+                            document.getElementById("leftcards").append(b)
+                        }
+                        if (a == "Earthquake") {
+                            lmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent)-5
+                            loh.childNodes.item(2).childNodes.item(1).textContent = parseInt(loh.childNodes.item(2).childNodes.item(1).textContent)-5
+                            rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-5
+                            roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-5
+                            if (parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {lmh.parentNode.remove()}
+                            if (parseInt(loh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {loh.parentNode.remove()}
+                            if (parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {rmh.parentNode.remove()}
+                            if (parseInt(roh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {roh.parentNode.remove()}
+                        }
+                        document.getElementById("left_action").childNodes.item(1).remove()
+                    }
+                    if (document.getElementById("right_action").childElementCount > 1) {
+                        let a = document.getElementById("right_action").childNodes.item(1).childNodes.item(0).childNodes.item(0).textContent
+                        if (a == "Barrier")
+                            PlayerRightHealth += 20
+                        if (a == "Reverse") {
+                            rightmaindamage += leftmaindamage
+                            rightoffdamage += leftoffdamage
+                            leftmaindamage = 0
+                            leftoffdamage = 0
+                        }
+                        if (a == "Robber") {
+                            let b = loh.parentNode.cloneNode()
+                            b.innerHTML = loh.parentNode.innerHTML
+                            loh.parentNode.remove()
+                            document.getElementById("rightcards").append(b)
+                        }
+                        if (a == "Earthquake") {
+                            lmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent)-5
+                            loh.childNodes.item(2).childNodes.item(1).textContent = parseInt(loh.childNodes.item(2).childNodes.item(1).textContent)-5
+                            rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-5
+                            roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-5
+                            if (parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {lmh.parentNode.remove()}
+                            if (parseInt(loh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {loh.parentNode.remove()}
+                            if (parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {rmh.parentNode.remove()}
+                            if (parseInt(roh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {roh.parentNode.remove()}
+                        }
+                        document.getElementById("right_action").childNodes.item(1).remove()
+                    }
+                    if (document.getElementById("right_mainhand").childElementCount > 1) {
+                        let a = applyhealth(parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent),parseInt(leftmaindamage))
+                        if (a[0] == 0) rmh.parentNode.remove();
+                        else rmh.childNodes.item(2).childNodes.item(1).textContent = a[0];
+                        leftmaindamage = a[1]
+                        if (rmh.childNodes.item(1).childNodes.item(1).textContent != "∞")
+                        if (parseInt(rmh.childNodes.item(1).childNodes.item(1).textContent) > 1)
+                            rmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(1).childNodes.item(1).textContent)-1
+                        else
+                            rmh.parentNode.remove()
+                    }
+                    if (document.getElementById("right_offhand").childElementCount > 1) {
+                        let a = applyhealth(parseInt(roh.childNodes.item(2).childNodes.item(1).textContent),parseInt(leftoffdamage))
+                        if (a[0] == 0) roh.parentNode.remove();
+                        else roh.childNodes.item(2).childNodes.item(1).textContent = a[0];
+                        leftoffdamage = a[1]
+                        if (roh.childNodes.item(1).childNodes.item(1).textContent != "∞")
+                        if (parseInt(roh.childNodes.item(1).childNodes.item(1).textContent) > 1)
+                            roh.childNodes.item(1).childNodes.item(1).textContent = parseInt(roh.childNodes.item(1).childNodes.item(1).textContent)-1
+                        else
+                            roh.parentNode.remove()
+                    }
+                    if (document.getElementById("left_mainhand").childElementCount > 1) {
+                        let a = applyhealth(parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent),parseInt(rightmaindamage))
+                        if (a[0] == 0) lmh.parentNode.remove();
+                        else lmh.childNodes.item(2).childNodes.item(1).textContent = a[0];
+                        rightmaindamage = a[1]
+                        if (lmh.childNodes.item(1).childNodes.item(1).textContent != "∞")
+                        if (parseInt(lmh.childNodes.item(1).childNodes.item(1).textContent) > 1)
+                            lmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(1).childNodes.item(1).textContent)-1
+                        else
+                            lmh.parentNode.remove()
+                    }
+                    if (document.getElementById("left_offhand").childElementCount > 1) {
+                        let a = applyhealth(parseInt(loh.childNodes.item(2).childNodes.item(1).textContent),parseInt(rightoffdamage))
+                        if (a[0] == 0) loh.parentNode.remove();
+                        else loh.childNodes.item(2).childNodes.item(1).textContent = a[0];
+                        rightoffdamage = a[1]
+                        if (loh.childNodes.item(1).childNodes.item(1).textContent != "∞")
+                        if (parseInt(loh.childNodes.item(1).childNodes.item(1).textContent) > 1)
+                            loh.childNodes.item(1).childNodes.item(1).textContent = parseInt(loh.childNodes.item(1).childNodes.item(1).textContent)-1
+                        else
+                            loh.parentNode.remove()
+                    }
+                    if (document.getElementById("right_mainhand").childElementCount > 1 && leftoffdamage > 0) {
+                        let a = applyhealth(parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent),parseInt(leftoffdamage))
+                        if (a[0] == 0) rmh.parentNode.remove();
+                        else rmh.childNodes.item(2).childNodes.item(1).textContent = a[0];
+                        leftoffdamage = a[1]
+                    }
+                    if (document.getElementById("right_offhand").childElementCount > 1 && leftmaindamage > 0) {
+                        let a = applyhealth(parseInt(roh.childNodes.item(2).childNodes.item(1).textContent),parseInt(leftmaindamage))
+                        if (a[0] == 0) roh.parentNode.remove();
+                        else roh.childNodes.item(2).childNodes.item(1).textContent = a[0];
+                        leftmaindamage = a[1]
+                    }
+                    if (document.getElementById("left_mainhand").childElementCount > 1 && rightoffdamage > 0) {
+                        let a = applyhealth(parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent),parseInt(rightoffdamage))
+                        if (a[0] == 0) lmh.parentNode.remove();
+                        else lmh.childNodes.item(2).childNodes.item(1).textContent = a[0];
+                        rightoffdamage = a[1]
+                    }
+                    if (document.getElementById("left_offhand").childElementCount > 1 && rightmaindamage > 0) {
+                        let a = applyhealth(parseInt(loh.childNodes.item(2).childNodes.item(1).textContent),parseInt(rightmaindamage))
+                        if (a[0] == 0) loh.parentNode.remove();
+                        else loh.childNodes.item(2).childNodes.item(1).textContent = a[0];
+                        rightmaindamage = a[1]
+                    }
+                    PlayerRightHealth -= (leftmaindamage+leftoffdamage) 
+                    PlayerLeftHealth -= (rightmaindamage+rightoffdamage)
+                    document.getElementById("lefthealth").childNodes.item(0).textContent = PlayerLeftHealth
+                    document.getElementById("righthealth").childNodes.item(0).textContent = PlayerRightHealth
+                    Step = 0
+                    nextround()
+                }
+
+            }
             carddefaults = [
                 ["damageful","pistol.png","Gun",15,5,1],
                 ["weapon","sword.png","Sword",8,"∞",10],
@@ -276,10 +480,10 @@
                 ["other","bow.png","Bow",5,32,100],
             ]
             actioncards = [
-                ["aqua","necromance.png","Necromancer",`Sacrifice one of your held weapons and remove one of the enemy's held weapons`],
+                ["aqua","robbery.png","Robber",`Secretly steal your enemy's offhand item after the battle O.o`],
                 ["orange","force_field.png","Barrier",`Creates a barrier around you which protects you from the next 20 damage`],
                 ["pink","reverse.png","Reverse",`Return the damage which your enemy was about to deal to you to itself`],
-                ["crimson","earthquake.png","Earthquake",`Shakes the ground, dealing 5 damage to every card in the game`],
+                ["crimson","earthquake.png","Earthquake",`Shakes the ground, dealing 5 damage to every held by players`],
             ]
             function ObjCollision(obj1, obj2) {
                 obj1.offsetBottom = obj1.offsetTop + obj1.offsetHeight;
@@ -301,12 +505,12 @@
                     item.style = ""
                     obj.append(item)
                 }; 
-                if(ObjCollision(item,c) && item.parentNode.className=="leftside" && item.getAttribute("CardType") == "Weapon") appendage(item,c); 
-                else if(ObjCollision(item,d) && item.parentNode.className=="leftside" && item.getAttribute("CardType") == "Weapon") appendage(item,d); 
-                else if(ObjCollision(item,e) && item.parentNode.className=="rightside" && item.getAttribute("CardType") == "Weapon") appendage(item,e); 
-                else if(ObjCollision(item,f) && item.parentNode.className=="rightside" && item.getAttribute("CardType") == "Weapon") appendage(item,f);
-                else if(ObjCollision(item,g) && item.parentNode.className=="leftside" && item.getAttribute("CardType") == "Action") appendage(item,g);
-                else if(ObjCollision(item,h) && item.parentNode.className=="rightside" && item.getAttribute("CardType") == "Action") appendage(item,h);
+                if(ObjCollision(item,c) && item.parentNode.className=="leftside" && item.getAttribute("CardType") == "Weapon" && c.childElementCount <= 1) appendage(item,c); 
+                else if(ObjCollision(item,d) && item.parentNode.className=="leftside" && item.getAttribute("CardType") == "Weapon" && d.childElementCount <= 1) appendage(item,d); 
+                else if(ObjCollision(item,e) && item.parentNode.className=="rightside" && item.getAttribute("CardType") == "Weapon" && e.childElementCount <= 1) appendage(item,e); 
+                else if(ObjCollision(item,f) && item.parentNode.className=="rightside" && item.getAttribute("CardType") == "Weapon" && f.childElementCount <= 1) appendage(item,f);
+                else if(ObjCollision(item,g) && item.parentNode.className=="leftside" && item.getAttribute("CardType") == "Action" && g.childElementCount <= 1) appendage(item,g);
+                else if(ObjCollision(item,h) && item.parentNode.className=="rightside" && item.getAttribute("CardType") == "Action" && h.childElementCount <= 1) appendage(item,h);
                 else if(ObjCollision(item,a) && item.parentNode.className=="leftside") appendage(item,a);
                 else if(ObjCollision(item,b) && item.parentNode.className=="rightside") appendage(item,b);
             }
@@ -342,10 +546,14 @@
                     pickmeup = '';
                     pickmeuplogic = false
                 }
-
             }
+            StopGeneratingCards = false
             function addnewcard(a) {
                 if (totalcards >= 50) {
+                    a.target.parentNode.remove()
+                    StopGeneratingCards = true
+                }
+                if (Limiter >= 5) {
                     a.target.parentNode.remove()
                 }
                 if (randomize(0,1) == 0) {
@@ -363,6 +571,7 @@
                     document.getElementById("rightcards").append(actioncardgen(q[0],q[1],q[2],q[3]))
                 }
                 totalcards+=2;
+                Limiter++;
             }
             function cardgenerator(rarity,image,name,atk,use,hp) {
                 let a = document.createElement("div")
@@ -468,23 +677,26 @@
         </script>
     </head>
     <body>
-        <div class="leftside">
+        <div class="leftside" id="leftside">
+            <h4 id="lefthealth">100<p>♥</p></h4>
             <div class="left_offhand" id="left_offhand"><h3>Offhand</h3></div>
             <div class="left_mainhand" id="left_mainhand"><h3>Mainhand</h3></div>
             <div class="left_action" id="left_action"><h3>Action</h3></div>
             <div class="leftcards" id="leftcards">
             </div>
         </div>
-        <div class="rightside">
+        <div class="rightside" id="rightside">
+            <h4 id="righthealth">100<p>♥</p></h4>
             <div class="right_action" id="right_action"><h3>Action</h3></div>
             <div class="right_offhand" id="right_offhand"><h3>Offhand</h3></div>
             <div class="right_mainhand" id="right_mainhand"><h3>Mainhand</h3></div>
             <div class="rightcards" id="rightcards">
             </div>
         </div>
-        <button class="nxtrnd">
+        <button class="nxtrnd" onclick="nextround()">
             <img src="nxtrnd.png">
         </button>
+        <button class="infobut" onclick="getinfo()">⚙</button>
         <script>
             addEventListener("mousemove",(e)=>{
                 if (pickmeup != "")
@@ -499,6 +711,7 @@
                 }
             })
             document.body.append(logocard())
+            nextround()
         </script>
     </body>
 </html>
