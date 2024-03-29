@@ -508,6 +508,7 @@ to you!, if your health reaches 0 you will lose the game, I guess thats all.
 Good luck!`.replace("\n","")
 About = `
 This is a Dynamic Card Game made by Jefferson!
+Idea of most cards and functionalities were by random1786
 Its hosted on a public github repository and is open source
 Jefferson's Discord: mr.jeferson
 More by Jefferson: https://mcdev.studio & https://amirhossainj123.github.io`.replace("\n","")
