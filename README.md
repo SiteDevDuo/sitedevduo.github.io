@@ -3,6 +3,7 @@
 ## Current Made things:
 ### Main Page Saying In Development
 ### Open Source Little Alchemy with Epic Customizablity!
+### Card Game!
 
 # Made by Jefferson & M0Reza
 ### Discord M0Reza = mr.velto
