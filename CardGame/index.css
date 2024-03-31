@@ -1,4 +1,4 @@
-.technicalbackground {
+    .technicalbackground {
     background-image: radial-gradient(white,gray);
     left:0px;
     top:0px;
@@ -80,7 +80,7 @@
     border-bottom: 5px solid black;
     box-sizing: border-box;
 }
-.card_upperpart[rarity="destructive"] {background-color: gold;}
+.card_upperpart[rarity="legendary"] {background-color: rgb(255,215,0);}
 .card_upperpart[rarity="damageful"] {background-color: red;}
 .card_upperpart[rarity="weapon"] {background-color: purple;}
 .card_upperpart[rarity="other"] {background-color: green;}
@@ -103,11 +103,13 @@
     margin-top: 10%;
     width: 90%;
     max-width: max-content;
+    filter: drop-shadow(1px 1px 1px rgb(50,50,50)) 
+    drop-shadow(-1px -1px 1px rgb(50,50,50));
 }
 .card_upperpart h2 {
     text-align: center;
     font-family: "Roboto Slab", serif;
-    font-size: 15px;
+    font-size: 16px;
     margin-top: 10%;
 }
 .card_lowerpart h2 {
@@ -225,12 +227,87 @@
     background-color: transparent;
     border-left: 5px solid black;
 }
+@keyframes appear {
+    0% {
+        opacity:0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.resultoverlayleft, .resultoverlayright {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    z-index: 100;
+    box-sizing: border-box;
+    background-color: rgba(150,150,150,0.9);
+    border-left: 5px solid black;
+    border-right: 5px solid black;
+    animation-name: appear;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+}
+.retrybutton {
+    width: 200px;
+    height: 200px;
+    border-radius: 60px;
+    left: 50%;
+    top:50%;
+    z-index: 1005;
+    border: 5px solid black;
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: orange;
+    animation-name: appear;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+}
+.retrybutton:hover img {
+    transition: 500ms;
+    transform: rotateY(360);
+}
+.retrybutton:hover {
+    border: 5px solid gray;
+    background-color: orangered;
+}
+.retrybutton img {
+    transition: 500ms;
+    width: 80%;
+    height: 80%;
+    transform: rotateY(-360);
+}
+.resultoverlayleft div, .resultoverlayright div{
+    margin: auto;
+    display: inline-flex;
+}
+.resultoverlayleft h1, .resultoverlayright h1{
+    text-align: center;
+    display: inline-block;
+    font-family: "Archivo", sans-serif;
+    font-size: 50px;
+}
+.resultoverlayright {
+    left: 50%;
+}
+.resultoverlayleft {
+    left: 0px;
+}
 .logocardpos {
+    transition: 500ms;
     position: absolute;
     left: 50%;
     top: 80px;
     transform: translateX(-50%) translateY(-50%);
 }
+.logocardpos:hover {
+    transition: 500ms;
+    transform: scale(1.2) translateX(-41.66%) translateY(-41.66%);
+}
+
 .leftcards {
     position: absolute;
     left: 0%;

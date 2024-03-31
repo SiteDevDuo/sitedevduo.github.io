@@ -28,7 +28,11 @@ function applyhealth(health,damage) {
     else
         return [0, damage-health]
     }
-Limiter = 1
+Limiter = 3
+loh = ""
+lmh = ""
+roh = ""
+rmh = ""
 function nextround() {
     Step++
     if (Step == 2 || Step == 1) {
@@ -44,7 +48,7 @@ function nextround() {
             try{document.getElementsByClassName("rightsideoverlay").item(0).remove()} catch(e) {console.log(e)}
         }
         Limiter = 3
-        if (StopGeneratingCards == false)
+        if (StopGeneratingCards == false && document.getElementsByClassName("logocardpos").length == 0)
             document.getElementById("technicalbackground").append(logocard())
         if (Turn) Turn = false
         else Turn = true
@@ -92,6 +96,24 @@ function nextround() {
                 rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-5
                 roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-5
             }
+            if (a == "Nuke") {
+                let dealdmg = (dmg,obj)=>{
+                    let b = showoffdamage(dmg)
+                    b.style.left = (obj.offsetLeft).toString() + "px"
+                    b.style.top = (obj.offsetTop).toString() + "px"
+                    obj.parentNode.append(b)
+                }
+                try{loh.parentNode.remove()}catch(e){console.log(e)}
+                try{rmh.parentNode.remove()}catch(e){console.log(e)}
+                try{roh.parentNode.remove()}catch(e){console.log(e)}
+                try{lmh.parentNode.remove()}catch(e){console.log(e)}
+                leftmaindamage += 30
+                rightmaindamage += 30
+                try{dealdmg(-1000,loh.parentNode.parentNode)}catch(e){console.log(e)}
+                try{dealdmg(-1000,rmh.parentNode.parentNode)}catch(e){console.log(e)}
+                try{dealdmg(-1000,lmh.parentNode.parentNode)}catch(e){console.log(e)}
+                try{dealdmg(-1000,roh.parentNode.parentNode)}catch(e){console.log(e)}
+            }
             document.getElementById("left_action").childNodes.item(1).remove()
         }
         if (document.getElementById("right_action").childElementCount > 1) {
@@ -129,6 +151,24 @@ function nextround() {
                 if (parseInt(loh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {loh.parentNode.remove()}
                 if (parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {rmh.parentNode.remove()}
                 if (parseInt(roh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {roh.parentNode.remove()}
+            }
+            if (a == "Nuke") {
+                let dealdmg = (dmg,obj)=>{
+                    let b = showoffdamage(dmg)
+                    b.style.left = (obj.offsetLeft).toString() + "px"
+                    b.style.top = (obj.offsetTop).toString() + "px"
+                    obj.parentNode.append(b)
+                }
+                try{loh.parentNode.remove()}catch(e){console.log(e)}
+                try{rmh.parentNode.remove()}catch(e){console.log(e)}
+                try{roh.parentNode.remove()}catch(e){console.log(e)}
+                try{lmh.parentNode.remove()}catch(e){console.log(e)}
+                PlayerLeftHealth-=30
+                PlayerRightHealth-=30
+                try{dealdmg(-1000,loh.parentNode.parentNode)}catch(e){console.log(e)}
+                try{dealdmg(-1000,rmh.parentNode.parentNode)}catch(e){console.log(e)}
+                try{dealdmg(-1000,lmh.parentNode.parentNode)}catch(e){console.log(e)}
+                try{dealdmg(-1000,roh.parentNode.parentNode)}catch(e){console.log(e)}
             }
             document.getElementById("right_action").childNodes.item(1).remove()
         }
@@ -261,26 +301,61 @@ function nextround() {
         document.getElementById("lefthealth").childNodes.item(0).textContent = PlayerLeftHealth
         document.getElementById("righthealth").childNodes.item(0).textContent = PlayerRightHealth
         Step = 0
+        if (PlayerLeftHealth <= 0 || PlayerRightHealth <= 0) {
+            let a = document.createElement("div")
+            let k = document.createElement("div")
+            a.className = "resultoverlayleft"
+            let b = document.createElement("h1")
+            k.append(b)
+            if (PlayerRightHealth <= 0) {b.textContent = "Victory"; b.style.color = "green";}
+            else {b.textContent = "Defeat"; b.style.color = "red";}
+            a.append(k)
+            document.getElementById("technicalbackground").append(a)
+            let c = document.createElement("div")
+            c.className = "resultoverlayright"
+            let kk = document.createElement("div")
+            let d = document.createElement("h1")
+            kk.append(d)
+            if (PlayerLeftHealth <= 0) {d.textContent = "Victory"; d.style.color = "green";}
+            else {d.textContent = "Defeat"; d.style.color = "red";}
+            c.append(kk)
+            document.getElementById("technicalbackground").append(c)
+            let o = document.createElement("button")
+            o.className = "retrybutton"
+            o.setAttribute("onclick","window.location.reload()")
+            let j = document.createElement("img")
+            j.src = "retry.png"
+            o.append(j)
+            document.getElementById("technicalbackground").append(o)
+        }
         nextround()
     }
 
 }
-carddefaults = [
-    ["damageful","pistol.png","Gun",15,5,1],
-    ["weapon","sword.png","Sword",8,"∞",10],
-    ["weapon","dagger.png","Dagger",5,"∞",15],
-    ["weapon","axe.png","Axe",10,"∞",8],
-    ["destructive","cannon.png","Cannon",35,1,20],
-    ["destructive","catapult.png","Catapult",30,3,10],
-    ["defensive","shield.png","Shield",1,"∞",30],
-    ["damageful","spear.png","Spear",14,6,3],
-    ["other","bow.png","Bow",5,32,20],
+carddefaults = [ // Card behavior, Image, Name, Attack, Use, Health, Rarity(Weight(The Bigger = The Easier To Obtain))
+    ["damageful","pistol.png","Pistol",15,5,1,5],
+    ["damageful","shotgun.png","Shotgun",20,2,10,2],
+    ["damageful","uzi.png","UZI",10,50,10,4],
+    ["weapon","sword.png","Sword",8,"∞",10,8],
+    ["weapon","dagger.png","Dagger",5,"∞",15,9],
+    ["weapon","axe.png","Axe",10,"∞",8,7],
+    ["weapon","bat.png","Bat",8,"∞",5,10],
+    ["legendary","cannon.png","Cannon",35,1,20,2],
+    ["legendary","catapult.png","Catapult",30,3,10,3],
+    ["legendary","wand.png","Magic Wand",20,20,2,1],
+    ["defensive","shield.png","Shield",1,"∞",30,6],
+    ["defensive","demon.png","Devil Armor",-5,20,100,1],
+    ["damageful","spear.png","Spear",14,6,3,4],
+    ["damageful","katana.png","Katana",15,"∞",15,5],
+    ["damageful","mace.png","Mace",12,8,5,4],
+    ["other","bow.png","Bow",5,32,20,5],
 ]
-actioncards = [
-    ["aqua","robbery.png","Robber",`Secretly steal your enemy's offhand item after the battle O.o`],
-    ["orange","force_field.png","Barrier",`Creates a barrier around you which protects you from the next 20 damage`],
-    ["pink","reverse.png","Reverse",`Return the damage which your enemy was about to deal to you to itself`],
-    ["crimson","earthquake.png","Earthquake",`Shakes the ground, dealing 5 damage to every held by players`],
+actioncards = [ // Card Color, Image, Card Name, Card Description, Rarity(Weight(The Bigger = The Easier To Obtain))
+    ["aqua","robbery.png","Robber",`Secretly steal your enemy's offhand item after the battle O.o`,2],
+    ["orange","force_field.png","Barrier",`Creates a barrier around you which protects you from the next 20 damage`,4],
+    ["pink","reverse.png","Reverse",`Return the damage which your enemy was about to deal to you to itself`, 5],
+    ["crimson","earthquake.png","Earthquake",`Shakes the ground, dealing 5 damage to every held by players`, 3],
+    ["green","nuke.png","Nuke",`Demolishes all held weapons and deals 30 damage to both players`, 2],
 ]
 function ObjCollision(obj1, obj2) {
     obj1.offsetBottom = obj1.offsetTop + obj1.offsetHeight;
@@ -345,6 +420,16 @@ function selectme(event) {
     }
 }
 StopGeneratingCards = false
+function GetARandomCard() {
+    let a = 0
+    let b = ""
+    if (randomize(0,1) == 1){actioncards.forEach((e)=>{a += e[4]}); b = "Action"}
+    else{carddefaults.forEach((e)=>{a += e[6]}); b = "Weapon"}
+    let c = randomize(0,a); StillNotSet = true
+    if (b == "Action") {actioncards.forEach((e)=>{if (c > 0) c -= e[4]; else if(StillNotSet) { Cardio = actioncardgen(e[0],e[1],e[2],e[3]); StillNotSet = false;}})}
+    else {carddefaults.forEach((e)=>{if (c > 0) c -= e[6]; else if(StillNotSet) {Cardio = cardgenerator(e[0],e[1],e[2],e[3],e[4],e[5]); StillNotSet = false;}})}
+    try{return Cardio} catch(e) {return "Somehow Something Somewhere breaksomely brokesome somethat somehow issome impossomble"}
+}
 function addnewcard(a) {
     if (totalcards >= 50) {
         a.target.parentNode.remove()
@@ -353,20 +438,8 @@ function addnewcard(a) {
     if (Limiter >= 5) {
         a.target.parentNode.remove()
     }
-    if (randomize(0,1) == 0) {
-        let t = carddefaults[randomize(0,carddefaults.length-1)]
-        document.getElementById("leftcards").append(cardgenerator(t[0],t[1],t[2],t[3],t[4],t[5]))
-    } else {
-        let t = actioncards[randomize(0,actioncards.length-1)]
-        document.getElementById("leftcards").append(actioncardgen(t[0],t[1],t[2],t[3]))
-    }
-    if (randomize(0,1) == 0) {
-        let q = carddefaults[randomize(0,carddefaults.length-1)]
-        document.getElementById("rightcards").append(cardgenerator(q[0],q[1],q[2],q[3],q[4],q[5]))
-    } else {
-        let q = actioncards[randomize(0,actioncards.length-1)]
-        document.getElementById("rightcards").append(actioncardgen(q[0],q[1],q[2],q[3]))
-    }
+    document.getElementById("leftcards").append(GetARandomCard())
+    document.getElementById("rightcards").append(GetARandomCard())
     totalcards+=2;
     Limiter++;
 }
@@ -508,7 +581,6 @@ to you!, if your health reaches 0 you will lose the game, I guess thats all.
 Good luck!`.replace("\n","")
 About = `
 This is a Dynamic Card Game made by Jefferson!
-Idea of most cards and functionalities were by random1786
 Its hosted on a public github repository and is open source
 Jefferson's Discord: mr.jeferson
 More by Jefferson: https://mcdev.studio & https://amirhossainj123.github.io`.replace("\n","")
