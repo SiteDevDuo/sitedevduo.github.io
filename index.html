@@ -1,32 +1,55 @@
 <html>
     <head>
-        <style>
-            @keyframes death {
-                0% {
-                    background-color: white;
-                    transform: rotateZ(0deg) scale(1);
-                }
-                100% {
-                    background-color: red;
-                    transform: rotateZ(1800deg) scale(0.001);
-                }
-            }
-            .killed {
-                animation-duration: 30s;
-                animation-name: death;
-                animation-fill-mode: forwards;
-            }
-            .killed * {
-                animation-duration: 30s;
-                animation-name: death;
-                animation-fill-mode: forwards;
-            }
-        </style>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link href="index.css" rel="stylesheet">
+        <script src="index.js"></script>
     </head>
-    <body id="body">
-        <h1>In Development</h1>
-        <h3>Is Being Made By M0Reza and Jefferson</h3>
-        <button onclick="document.getElementById('body').className = 'killed'">Kill yourself</button>
-        <button onclick="alert(`this is a game like little alchemy\ncombine elements and get new elements and progress :)`);window.location.href='https://sitedevduo.github.io/Games/merge_elements'">Bored?</button>
+    <body>
+        <div class="technicalbackground" id="technicalbackground">
+        <div class="leftside" id="leftside">
+            <h4 id="lefthealth">100<p>♥</p></h4>
+            <div class="left_offhand" id="left_offhand"><h3>Offhand</h3></div>
+            <div class="left_mainhand" id="left_mainhand"><h3>Mainhand</h3></div>
+            <div class="left_action" id="left_action"><h3>Action</h3></div>
+            <div class="leftcards" id="leftcards">
+            </div>
+        </div>
+        <div class="rightside" id="rightside">
+            <h4 id="righthealth">100<p>♥</p></h4>
+            <div class="right_action" id="right_action"><h3>Action</h3></div>
+            <div class="right_offhand" id="right_offhand"><h3>Offhand</h3></div>
+            <div class="right_mainhand" id="right_mainhand"><h3>Mainhand</h3></div>
+            <div class="rightcards" id="rightcards">
+            </div>
+        </div>
+        <button class="nxtrnd" onclick="nextround()">
+            <img src="nxtrnd.png">
+        </button>
+        <button class="infobut" onclick="infobutton()"><img src="info.png"></button>
+        <script>
+            addEventListener("mousemove",(e)=>{
+                if (pickmeup != "")
+                {
+                    if (pickmeuplogic) {
+                        if (e.clientX-50 > window.innerWidth/2)
+                        document.getElementById(pickmeup).style = `transform: translateX(-50%) translateY(-50%); position: absolute; left:${e.clientX-window.innerWidth/2}px; top:${e.clientY}px`
+                    } else {
+                        if (e.clientX+50 < window.innerWidth/2)
+                            document.getElementById(pickmeup).style = `transform: translateX(-50%) translateY(-50%); position: absolute; left:${e.clientX}px; top:${e.clientY}px`
+                    }
+                }
+            })
+            document.getElementById("technicalbackground").append(logocard())
+            document.getElementById("technicalbackground").style.transform = `scale(${SETTINGS_Scale})`
+            document.getElementById("technicalbackground").style.filter = `brightness(${SETTINGS_Brightness}) contrast(${SETTINGS_Contrast})`
+            document.getElementById("technicalbackground").style.width = `${SETTINGS_Width}px` 
+            document.getElementById("technicalbackground").style.height = `${SETTINGS_Height}px` 
+            nextround()
+        </script>
+        </div>
     </body>
 </html>

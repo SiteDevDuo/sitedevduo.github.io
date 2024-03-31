@@ -1,0 +1,392 @@
+    .technicalbackground {
+    background-image: radial-gradient(white,gray);
+    left:0px;
+    top:0px;
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+}
+.card {
+    width: 100px;
+    height: 150px;
+    background-color: white;
+    border: 5px solid black;
+    display: inline-block;
+    overflow:hidden;
+    margin: 5px;
+    border-radius: 10px;
+}
+.rightsideoverlay, .leftsideoverlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+.rightsideoverlay {
+    background-image: linear-gradient(to left,rgba(0,0,0,0.8),rgba(0,0,0,0.6));
+}
+.leftsideoverlay {
+    background-image: linear-gradient(to right,rgba(0,0,0,0.8),rgba(0,0,0,0.6));
+}
+.left_offhand, .right_offhand, .left_mainhand, .right_mainhand, .left_action, .right_action {
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
+    display: flex;
+    background-image: linear-gradient(to bottom, rgb(50,50,50), rgb(20,20,20));
+    width: 110px;
+    height: 165px;
+    border: 5px solid black;
+    display: inline-block;
+    overflow:hidden;
+    margin: 5px;
+    border-radius: 10px;
+}
+.left_offhand h3, .right_offhand h3, .left_mainhand h3, .right_mainhand h3, .left_action h3, .right_action h3 {
+    font-size: 20px;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 0;
+    color: rgba(255,255,255,0.5);
+}
+.left_offhand .card, .right_offhand .card, .left_mainhand .card, .right_mainhand .card, .left_action .card, .right_action .card {
+    z-index: -1;
+    margin: auto;
+}
+.left_action, .right_action {
+    top: 50%;
+}
+.left_action {
+    left:50%
+}
+.right_action {
+    left:50%
+}
+.left_offhand, .left_mainhand {
+    left: 70%;
+}
+.right_offhand, .right_mainhand {
+    left: 30%;
+}
+.left_mainhand, .right_mainhand {
+    top: 35%;
+}
+.left_offhand, .right_offhand {
+    top: 70%;
+}
+.card_upperpart {
+    width: 100%;
+    height: 80%;
+    border-bottom: 5px solid black;
+    box-sizing: border-box;
+}
+.card_upperpart[rarity="legendary"] {background-color: rgb(255,215,0);}
+.card_upperpart[rarity="damageful"] {background-color: red;}
+.card_upperpart[rarity="weapon"] {background-color: purple;}
+.card_upperpart[rarity="other"] {background-color: green;}
+.card_upperpart[rarity="defensive"] {background-color: lightblue;}
+.card_lowerpart {
+    width: 100%;
+    height: 20%;
+    background-color: gray;
+    overflow: hidden;
+    display: flex;
+    align-items: canter;
+}
+.card_imagecontainer {
+    display: flex;
+}
+.card_imagecontainer img {
+    max-height: 62.5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    width: 90%;
+    max-width: max-content;
+    filter: drop-shadow(1px 1px 1px rgb(50,50,50)) 
+    drop-shadow(-1px -1px 1px rgb(50,50,50));
+}
+.card_upperpart h2 {
+    text-align: center;
+    font-family: "Roboto Slab", serif;
+    font-size: 16px;
+    margin-top: 10%;
+}
+.card_lowerpart h2 {
+    display: inline-block;
+    font-family: "Noto Emoji", sans-serif;
+    font-weight: 900;
+    font-size: 10px;
+    margin: auto
+}
+.infobut {
+    font-family: "Noto Emoji", sans-serif;
+    font-size: 30px;
+    width: 50px;
+    height: 50px;
+    transform: translateX(-50%) translateY(-50%);
+    top:90%;
+    left: 50%;
+    border-radius: 50px;
+    position: absolute;
+    display: flex;
+} 
+.infobut img {
+    width: 30px;
+    height: 30px;
+    margin: auto;
+}
+.card_lowerpart p {
+    display: inline-block;
+    font-family: "Roboto Slab", serif;
+    font-weight: 1000;
+    font-size: 10px;
+}
+.actioncard_upper {
+    width: 100%;
+    height: 20%;
+    border-bottom: 5px solid black;
+    box-sizing: border-box;
+    background-color: gray;
+    display: flex;
+}
+.actioncard_upper h2 {
+    font-family: "Roboto Slab", serif;
+    font-size: 10px;
+    display: inline-block;
+    margin: auto;
+}
+.actioncard_lower {
+    width: 100%;
+    height: 20%;
+    border-top: 5px solid black;
+    box-sizing: border-box;
+    display: flex;
+    background-color: gray;
+}
+.actioncard_lower p {
+    font-family: "Roboto Slab", serif;
+    font-size: 6px;
+    font-weight: 1000;
+    display: inline-block;
+    text-align: center;
+    margin-top: 2.5px;
+    font-family: "Archivo", sans-serif;
+}
+.actioncard_middle {
+    width: 100%;
+    height: 60%;
+    display: flex;
+}
+.actioncard_middle img {
+    width: 80%;
+    height: fit-content;
+    margin: auto;
+}
+.cardoverlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(20,20,20,0.1);
+    z-index: 999;
+    transform: translateY(-100%);
+    cursor: grab;
+}
+.cardoverlay:hover {
+    background-color: transparent;
+}
+.LogoCardEntirely {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background-image: linear-gradient(to bottom,orange,tomato);
+}
+.LogoCardEntirely img {
+    width: 80%;
+    height: fit-content;
+    margin: auto;
+}
+.leftside {
+    width: 50%;
+    height: 100%;
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-right: 5px solid black;
+}
+.rightside {
+    width: 50%;
+    box-sizing: border-box;
+    height: 100%;
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    background-color: transparent;
+    border-left: 5px solid black;
+}
+@keyframes appear {
+    0% {
+        opacity:0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.resultoverlayleft, .resultoverlayright {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    z-index: 100;
+    box-sizing: border-box;
+    background-color: rgba(150,150,150,0.9);
+    border-left: 5px solid black;
+    border-right: 5px solid black;
+    animation-name: appear;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+}
+.retrybutton {
+    width: 200px;
+    height: 200px;
+    border-radius: 60px;
+    left: 50%;
+    top:50%;
+    z-index: 1005;
+    border: 5px solid black;
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: orange;
+    animation-name: appear;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+}
+.retrybutton:hover img {
+    transition: 500ms;
+    transform: rotate(360);
+}
+.retrybutton:hover {
+    border: 5px solid gray;
+    background-color: orangered;
+}
+.retrybutton img {
+    transition: 500ms;
+    width: 80%;
+    height: 80%;
+    transform: rotate(-360);
+}
+.resultoverlayleft div, .resultoverlayright div{
+    margin: auto;
+    display: inline-flex;
+}
+.resultoverlayleft h1, .resultoverlayright h1{
+    text-align: center;
+    display: inline-block;
+    font-family: "Archivo", sans-serif;
+    font-size: 50px;
+}
+.resultoverlayright {
+    left: 50%;
+}
+.resultoverlayleft {
+    left: 0px;
+}
+.logocardpos {
+    position: absolute;
+    left: 50%;
+    top: 80px;
+    transform: translateX(-50%) translateY(-50%);
+}
+.leftcards {
+    position: absolute;
+    left: 0%;
+    height: 100%;
+    width: 35%;
+    overflow: auto;
+}
+.rightcards {
+    position: absolute;
+    left: 65%;
+    height: 100%;
+    width: 35%;
+    overflow: auto;
+    direction: rtl;
+}
+.leftside h4, .rightside h4 {
+    position: absolute;
+    font-family: "Roboto Slab", serif;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    display: inline-block;
+}
+.leftside h4 p, .rightside h4 p {
+    font-family: "Noto Emoji", sans-serif;
+    display: inline-block;
+}
+.leftcards::-webkit-scrollbar, .rightcards::-webkit-scrollbar {
+    background-color: black;
+    width: 10px;
+}
+.leftcards::-webkit-scrollbar-thumb, .rightcards::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 20px;
+}
+.nxtrnd {
+    background-image: linear-gradient(to bottom, orange, tomato);
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 9;
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
+    border: 2px solid black;
+    border-top: 2px solid rgb(70,70,70);
+    border-left: 2px solid rgb(70,70,70);
+    color: white;
+}
+.nxtrnd img {
+    width: 100%;
+    height: fit-content;
+}
+@keyframes DealDamage {
+    0%{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+    90% {
+        transform: translateY(20px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+}
+.DamageIndicator {
+    animation-name: DealDamage;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    font-size: 50px;
+    transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+    font-family: "Archivo", sans-serif;
+}
+.nxtrnd:hover {
+    border: 2px solid rgb(50,50,50);
+    border-top: 2px solid rgb(100,100,100);
+    border-left: 2px solid rgb(100,100,100);
+}
+.nxtrnd:active {
+    border: 2px solid rgb(70,70,70);
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+}
