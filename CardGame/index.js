@@ -96,6 +96,24 @@ function nextround() {
                 rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-5
                 roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-5
             }
+            if (a == "Molotov") {
+                let dealdmg = (dmg,obj)=>{
+                    let b = showoffdamage(dmg)
+                    b.style.left = (obj.offsetLeft).toString() + "px"
+                    b.style.top = (obj.offsetTop).toString() + "px"
+                    obj.parentNode.append(b)
+                }
+                lmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent)-3
+                loh.childNodes.item(2).childNodes.item(1).textContent = parseInt(loh.childNodes.item(2).childNodes.item(1).textContent)-3
+                setTimeout(()=>{dealdmg(-3,lmh.parentNode.parentNode)
+                dealdmg(-3,loh.parentNode.parentNode)
+                dealdmg(-3,rmh.parentNode.parentNode)
+                dealdmg(-3,roh.parentNode.parentNode)},1000)
+                rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-3
+                roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-3
+                rmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(1).childNodes.item(1).textContent)/2
+                roh.childNodes.item(1).childNodes.item(1).textContent = parseInt(roh.childNodes.item(1).childNodes.item(1).textContent)/2
+            }
             if (a == "Nuke") {
                 let dealdmg = (dmg,obj)=>{
                     let b = showoffdamage(dmg)
@@ -151,6 +169,24 @@ function nextround() {
                 if (parseInt(loh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {loh.parentNode.remove()}
                 if (parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {rmh.parentNode.remove()}
                 if (parseInt(roh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {roh.parentNode.remove()}
+            }
+            if (a == "Molotov") {
+                let dealdmg = (dmg,obj)=>{
+                    let b = showoffdamage(dmg)
+                    b.style.left = (obj.offsetLeft).toString() + "px"
+                    b.style.top = (obj.offsetTop).toString() + "px"
+                    obj.parentNode.append(b)
+                }
+                lmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent)-3
+                loh.childNodes.item(2).childNodes.item(1).textContent = parseInt(loh.childNodes.item(2).childNodes.item(1).textContent)-3
+                setTimeout(()=>{dealdmg(-3,lmh.parentNode.parentNode)
+                dealdmg(-3,loh.parentNode.parentNode)
+                dealdmg(-3,rmh.parentNode.parentNode)
+                dealdmg(-3,roh.parentNode.parentNode)},1000)
+                rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-3
+                roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-3
+                lmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(1).childNodes.item(1).textContent)/2
+                loh.childNodes.item(1).childNodes.item(1).textContent = parseInt(loh.childNodes.item(1).childNodes.item(1).textContent)/2
             }
             if (a == "Nuke") {
                 let dealdmg = (dmg,obj)=>{
@@ -342,6 +378,7 @@ carddefaults = [ // Card behavior, Image, Name, Attack, Use, Health, Rarity(Weig
     ["weapon","bat.png","Bat",8,"∞",5,10],
     ["legendary","cannon.png","Cannon",35,1,20,2],
     ["legendary","catapult.png","Catapult",30,3,10,3],
+    ["legendary","bazo.png","RPG",35,1,5,1],
     ["legendary","wand.png","Magic Wand",20,20,2,1],
     ["defensive","shield.png","Shield",1,"∞",30,6],
     ["defensive","demon.png","Devil Armor",-5,20,100,1],
@@ -354,7 +391,8 @@ actioncards = [ // Card Color, Image, Card Name, Card Description, Rarity(Weight
     ["aqua","robbery.png","Robber",`Secretly steal your enemy's offhand item after the battle O.o`,2],
     ["orange","force_field.png","Barrier",`Creates a barrier around you which protects you from the next 20 damage`,4],
     ["pink","reverse.png","Reverse",`Return the damage which your enemy was about to deal to you to itself`, 5],
-    ["crimson","earthquake.png","Earthquake",`Shakes the ground, dealing 5 damage to every held by players`, 3],
+    ["crimson","earthquake.png","Earthquake",`Shakes the ground, dealing 5 damage to every held card by players`, 3],
+    ["red","cocktail.png","Molotov",`deals 3 damage to every held card by player, and halves use counts of enemy `, 3],
     ["green","nuke.png","Nuke",`Demolishes all held weapons and deals 30 damage to both players`, 2],
 ]
 function ObjCollision(obj1, obj2) {
@@ -420,6 +458,16 @@ function selectme(event) {
     }
 }
 StopGeneratingCards = false
+function GetPercentage() {
+    let a = 0
+    let b = ""
+    let c = 0
+    actioncards.forEach((e)=>{a += e[4]})
+    carddefaults.forEach((e)=>{c += e[6]})
+    carddefaults.forEach((e)=>{b+=`Weapon: ${e[2]} ${parseFloat(parseInt(e[6]/c*50000)/1000)}%\n`})
+    actioncards.forEach((e)=>{b+=`Action: ${e[2]} ${parseFloat(parseInt(e[4]/a*50000)/1000)}%\n`})
+    return b
+}
 function GetARandomCard() {
     let a = 0
     let b = ""
@@ -581,6 +629,8 @@ to you!, if your health reaches 0 you will lose the game, I guess thats all.
 Good luck!`.replace("\n","")
 About = `
 This is a Dynamic Card Game made by Jefferson!
+Special Thanks to Navid Abd, Random1785 for their epic ideas!
+(though I wasnt good enough to make them as well as they said)
 Its hosted on a public github repository and is open source
 Jefferson's Discord: mr.jeferson
 More by Jefferson: https://mcdev.studio & https://amirhossainj123.github.io`.replace("\n","")
