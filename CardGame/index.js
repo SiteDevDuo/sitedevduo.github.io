@@ -126,6 +126,12 @@ function nextround() {
                 try{if (rmh.childNodes.item(1).childNodes.item(1).textContent != "∞") rmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(1).childNodes.item(1).textContent)/2} catch(e) {console.log(e)}
                 try{if (roh.childNodes.item(1).childNodes.item(1).textContent != "∞") roh.childNodes.item(1).childNodes.item(1).textContent = parseInt(roh.childNodes.item(1).childNodes.item(1).textContent)/2} catch(e) {console.log(e)}
             }
+            if (a == "Healing Bullet") {
+                leftmaindamage = -Math.abs(leftmaindamage)
+                leftoffdamage = -Math.abs(leftoffdamage)
+                rightmaindamage = -Math.abs(rightmaindamage)
+                rightoffdamage = -Math.abs(rightoffdamage)
+            }
             if (a == "Nuke") {
                 let dealdmg = (dmg,obj)=>{
                     let b = showoffdamage(dmg)
@@ -201,6 +207,12 @@ function nextround() {
                 try{loh.childNodes.item(2).childNodes.item(1).textContent = parseInt(loh.childNodes.item(2).childNodes.item(1).textContent)-3} catch {}
                 try{if (lmh.childNodes.item(1).childNodes.item(1).textContent != "∞") lmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(1).childNodes.item(1).textContent)/2} catch(e) {console.log(e)}
                 try{if (loh.childNodes.item(1).childNodes.item(1).textContent != "∞") loh.childNodes.item(1).childNodes.item(1).textContent = parseInt(loh.childNodes.item(1).childNodes.item(1).textContent)/2} catch(e) {console.log(e)}
+            }
+            if (a == "Healing Bullet") {
+                leftmaindamage = -Math.abs(leftmaindamage)
+                leftoffdamage = -Math.abs(leftoffdamage)
+                rightmaindamage = -Math.abs(rightmaindamage)
+                rightoffdamage = -Math.abs(rightoffdamage)
             }
             if (a == "Nuke") {
                 let dealdmg = (dmg,obj)=>{
@@ -402,17 +414,19 @@ carddefaults = [ // Card behavior, Image, Name, Attack, Use, Health, Rarity(Weig
     ["legendary","bazo.png","RPG",35,1,5,1],
     ["legendary","wand.png","Magic Wand",20,20,2,1],
     ["legendary","reaper.png","Reaper",15,6,30,1],
+    ["legendary","demonclaw.png","Devil Claw",30,"∞",0,1], // The best weapon to use against Devil Armor I AM SUCH A STRATOGIAST GENIOS!
     ["defensive","shield.png","Shield",1,"∞",30,6],
     ["defensive","demon.png","Devil Armor",-5,20,100,1],
     ["other","bow.png","Bow",5,32,20,5],
 ]
 actioncards = [ // Card Color, Image, Card Name, Card Description, Rarity(Weight(The Bigger = The Easier To Obtain))
     ["aqua","robbery.png","Robber",`Secretly steal your enemy's offhand item after the battle O.o`,2],
-    ["orange","force_field.png","Barrier",`Creates a barrier around you which protects you from the next 20 damage`,4],
-    ["pink","reverse.png","Reverse",`Return the damage which your enemy was about to deal to you to itself`, 5],
+    ["orange","force_field.png","Barrier",`Creates a barrier around you which protects you from the next 20 damage`,5],
+    ["pink","reverse.png","Reverse",`Return the damage which your enemy was about to deal to you to itself`, 3],
     ["crimson","earthquake.png","Earthquake",`Shakes the ground, dealing 5 damage to every held card by players`, 3],
     ["red","cocktail.png","Molotov",`deals 3 damage to every held card by player, and halves use counts of enemy `, 3],
     ["chocolate","forceddeal.png","Forced Deal",`Swap a random card of yours with a random one from enemy(steal if enemy has none)`, 3],
+    ["darkred","sryinge.png","Healing Bullet",`All dealt damage in this round will be healing attack (both yours and the enemy)`, 2], // dont complain about sryinge I was too bored to fix it lol (jk it was intentional)
     ["green","nuke.png","Nuke",`Demolishes all held weapons and deals 30 damage to both players`, 1],
 ]
 function ObjCollision(obj1, obj2) {
