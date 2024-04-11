@@ -33,6 +33,16 @@ loh = ""
 lmh = ""
 roh = ""
 rmh = ""
+function KillCard(item) {
+    item.className += " Killed"
+    for (let index = 0; index < item.childNodes.length; index++) {
+        if (item.childNodes.item(index).className == "cardoverlay")
+            item.childNodes.item(index).remove()
+    }
+    setTimeout(() => {
+        item.remove()
+    },1000)
+}
 function nextround() {
     Step++
     if (Step == 2 || Step == 1) {
@@ -93,8 +103,14 @@ function nextround() {
                 dealdmg(-5,loh.parentNode.parentNode)
                 dealdmg(-5,rmh.parentNode.parentNode)
                 dealdmg(-5,roh.parentNode.parentNode)},1000)
-                rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-5
-                roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-5
+                if (rmh.childNodes.item(1).childNodes.item(1).textContent != "∞") rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-5
+                if (roh.childNodes.item(1).childNodes.item(1).textContent != "∞") roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-5
+            }
+            if (a == "Forced Deal") {
+                let cardleft = document.getElementById("leftcards").childNodes.item(randomize(0,document.getElementById("leftcards").childNodes.length-1))
+                let cardright = document.getElementById("rightcards").childNodes.item(randomize(0,document.getElementById("leftcards").childNodes.length-1))
+                document.getElementById("leftcards").append(cardright)
+                document.getElementById("rightcards").append(cardleft)
             }
             if (a == "Molotov") {
                 let dealdmg = (dmg,obj)=>{
@@ -103,16 +119,12 @@ function nextround() {
                     b.style.top = (obj.offsetTop).toString() + "px"
                     obj.parentNode.append(b)
                 }
-                lmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent)-3
-                loh.childNodes.item(2).childNodes.item(1).textContent = parseInt(loh.childNodes.item(2).childNodes.item(1).textContent)-3
-                setTimeout(()=>{dealdmg(-3,lmh.parentNode.parentNode)
-                dealdmg(-3,loh.parentNode.parentNode)
-                dealdmg(-3,rmh.parentNode.parentNode)
+                try{rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-3} catch {}
+                try{roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-3} catch {}
+                setTimeout(()=>{dealdmg(-3,rmh.parentNode.parentNode)
                 dealdmg(-3,roh.parentNode.parentNode)},1000)
-                rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-3
-                roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-3
-                rmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(1).childNodes.item(1).textContent)/2
-                roh.childNodes.item(1).childNodes.item(1).textContent = parseInt(roh.childNodes.item(1).childNodes.item(1).textContent)/2
+                try{if (rmh.childNodes.item(1).childNodes.item(1).textContent != "∞") rmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(1).childNodes.item(1).textContent)/2} catch(e) {console.log(e)}
+                try{if (roh.childNodes.item(1).childNodes.item(1).textContent != "∞") roh.childNodes.item(1).childNodes.item(1).textContent = parseInt(roh.childNodes.item(1).childNodes.item(1).textContent)/2} catch(e) {console.log(e)}
             }
             if (a == "Nuke") {
                 let dealdmg = (dmg,obj)=>{
@@ -121,10 +133,10 @@ function nextround() {
                     b.style.top = (obj.offsetTop).toString() + "px"
                     obj.parentNode.append(b)
                 }
-                try{loh.parentNode.remove()}catch(e){console.log(e)}
-                try{rmh.parentNode.remove()}catch(e){console.log(e)}
-                try{roh.parentNode.remove()}catch(e){console.log(e)}
-                try{lmh.parentNode.remove()}catch(e){console.log(e)}
+                try{KillCard(loh.parentNode)}catch(e){console.log(e)}
+                try{KillCard(rmh.parentNode)}catch(e){console.log(e)}
+                try{KillCard(roh.parentNode)}catch(e){console.log(e)}
+                try{KillCard(lmh.parentNode)}catch(e){console.log(e)}
                 leftmaindamage += 30
                 rightmaindamage += 30
                 try{dealdmg(-1000,loh.parentNode.parentNode)}catch(e){console.log(e)}
@@ -143,6 +155,12 @@ function nextround() {
                 rightoffdamage += leftoffdamage
                 leftmaindamage = 0
                 leftoffdamage = 0
+            }
+            if (a == "Forced Deal") {
+                let cardleft = document.getElementById("leftcards").childNodes.item(randomize(0,document.getElementById("leftcards").childNodes.length-1))
+                let cardright = document.getElementById("rightcards").childNodes.item(randomize(0,document.getElementById("rightcards").childNodes.length-1))
+                document.getElementById("leftcards").append(cardright)
+                document.getElementById("rightcards").append(cardleft)
             }
             if (a == "Robber") {
                 let b = loh.parentNode.cloneNode()
@@ -165,10 +183,10 @@ function nextround() {
                     dealdmg(-5,roh.parentNode.parentNode)},1000)
                 rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-5
                 roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-5
-                if (parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {lmh.parentNode.remove()}
-                if (parseInt(loh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {loh.parentNode.remove()}
-                if (parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {rmh.parentNode.remove()}
-                if (parseInt(roh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {roh.parentNode.remove()}
+                if (parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {KillCard(lmh.parentNode)}
+                if (parseInt(loh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {KillCard(loh.parentNode)}
+                if (parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {KillCard(rmh.parentNode)}
+                if (parseInt(roh.childNodes.item(2).childNodes.item(1).textContent) <= 0) {KillCard(roh.parentNode)}
             }
             if (a == "Molotov") {
                 let dealdmg = (dmg,obj)=>{
@@ -177,16 +195,12 @@ function nextround() {
                     b.style.top = (obj.offsetTop).toString() + "px"
                     obj.parentNode.append(b)
                 }
-                lmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent)-3
-                loh.childNodes.item(2).childNodes.item(1).textContent = parseInt(loh.childNodes.item(2).childNodes.item(1).textContent)-3
                 setTimeout(()=>{dealdmg(-3,lmh.parentNode.parentNode)
-                dealdmg(-3,loh.parentNode.parentNode)
-                dealdmg(-3,rmh.parentNode.parentNode)
-                dealdmg(-3,roh.parentNode.parentNode)},1000)
-                rmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent)-3
-                roh.childNodes.item(2).childNodes.item(1).textContent = parseInt(roh.childNodes.item(2).childNodes.item(1).textContent)-3
-                lmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(1).childNodes.item(1).textContent)/2
-                loh.childNodes.item(1).childNodes.item(1).textContent = parseInt(loh.childNodes.item(1).childNodes.item(1).textContent)/2
+                dealdmg(-3,loh.parentNode.parentNode)},1000)
+                try{lmh.childNodes.item(2).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent)-3} catch {}
+                try{loh.childNodes.item(2).childNodes.item(1).textContent = parseInt(loh.childNodes.item(2).childNodes.item(1).textContent)-3} catch {}
+                try{if (lmh.childNodes.item(1).childNodes.item(1).textContent != "∞") lmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(1).childNodes.item(1).textContent)/2} catch(e) {console.log(e)}
+                try{if (loh.childNodes.item(1).childNodes.item(1).textContent != "∞") loh.childNodes.item(1).childNodes.item(1).textContent = parseInt(loh.childNodes.item(1).childNodes.item(1).textContent)/2} catch(e) {console.log(e)}
             }
             if (a == "Nuke") {
                 let dealdmg = (dmg,obj)=>{
@@ -195,10 +209,10 @@ function nextround() {
                     b.style.top = (obj.offsetTop).toString() + "px"
                     obj.parentNode.append(b)
                 }
-                try{loh.parentNode.remove()}catch(e){console.log(e)}
-                try{rmh.parentNode.remove()}catch(e){console.log(e)}
-                try{roh.parentNode.remove()}catch(e){console.log(e)}
-                try{lmh.parentNode.remove()}catch(e){console.log(e)}
+                try{KillCard(loh.parentNode)}catch(e){console.log(e)}
+                try{KillCard(rmh.parentNode)}catch(e){console.log(e)}
+                try{KillCard(roh.parentNode)}catch(e){console.log(e)}
+                try{KillCard(lmh.parentNode)}catch(e){console.log(e)}
                 PlayerLeftHealth-=30
                 PlayerRightHealth-=30
                 try{dealdmg(-1000,loh.parentNode.parentNode)}catch(e){console.log(e)}
@@ -216,14 +230,14 @@ function nextround() {
             b.style.top = (rmh.parentNode.parentNode.offsetTop).toString() + "px"
             rmh.parentNode.parentNode.parentNode.append(b)
 
-            if (a[0] == 0) rmh.parentNode.remove();
+            if (a[0] == 0) KillCard(rmh.parentNode)
             else rmh.childNodes.item(2).childNodes.item(1).textContent = a[0];
             leftmaindamage = a[1]
             if (rmh.childNodes.item(1).childNodes.item(1).textContent != "∞")
             if (parseInt(rmh.childNodes.item(1).childNodes.item(1).textContent) > 1)
                 rmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(rmh.childNodes.item(1).childNodes.item(1).textContent)-1
             else
-                rmh.parentNode.remove()
+                KillCard(rmh.parentNode)
         }
         if (document.getElementById("right_offhand").childElementCount > 1) {
             let a = applyhealth(parseInt(roh.childNodes.item(2).childNodes.item(1).textContent),parseInt(leftoffdamage))
@@ -233,14 +247,14 @@ function nextround() {
             b.style.top = (roh.parentNode.parentNode.offsetTop).toString() + "px"
             roh.parentNode.parentNode.parentNode.append(b)
 
-            if (a[0] == 0) roh.parentNode.remove();
+            if (a[0] == 0) KillCard(roh.parentNode)
             else roh.childNodes.item(2).childNodes.item(1).textContent = a[0];
             leftoffdamage = a[1]
             if (roh.childNodes.item(1).childNodes.item(1).textContent != "∞")
             if (parseInt(roh.childNodes.item(1).childNodes.item(1).textContent) > 1)
                 roh.childNodes.item(1).childNodes.item(1).textContent = parseInt(roh.childNodes.item(1).childNodes.item(1).textContent)-1
             else
-                roh.parentNode.remove()
+                KillCard(roh.parentNode)
         }
         if (document.getElementById("left_mainhand").childElementCount > 1) {
             let a = applyhealth(parseInt(lmh.childNodes.item(2).childNodes.item(1).textContent),parseInt(rightmaindamage))
@@ -250,14 +264,14 @@ function nextround() {
             b.style.top = (lmh.parentNode.parentNode.offsetTop).toString() + "px"
             lmh.parentNode.parentNode.parentNode.append(b)
 
-            if (a[0] == 0) lmh.parentNode.remove();
+            if (a[0] == 0) KillCard(lmh.parentNode)
             else lmh.childNodes.item(2).childNodes.item(1).textContent = a[0];
             rightmaindamage = a[1]
             if (lmh.childNodes.item(1).childNodes.item(1).textContent != "∞")
             if (parseInt(lmh.childNodes.item(1).childNodes.item(1).textContent) > 1)
                 lmh.childNodes.item(1).childNodes.item(1).textContent = parseInt(lmh.childNodes.item(1).childNodes.item(1).textContent)-1
             else
-                lmh.parentNode.remove()
+                KillCard(lmh.parentNode)
         }
         if (document.getElementById("left_offhand").childElementCount > 1) {
             let a = applyhealth(parseInt(loh.childNodes.item(2).childNodes.item(1).textContent),parseInt(rightoffdamage))
@@ -267,14 +281,14 @@ function nextround() {
             b.style.top = (loh.parentNode.parentNode.offsetTop).toString() + "px"
             loh.parentNode.parentNode.parentNode.append(b)
 
-            if (a[0] == 0) loh.parentNode.remove();
+            if (a[0] == 0) KillCard(loh.parentNode)
             else loh.childNodes.item(2).childNodes.item(1).textContent = a[0];
             rightoffdamage = a[1]
             if (loh.childNodes.item(1).childNodes.item(1).textContent != "∞")
             if (parseInt(loh.childNodes.item(1).childNodes.item(1).textContent) > 1)
                 loh.childNodes.item(1).childNodes.item(1).textContent = parseInt(loh.childNodes.item(1).childNodes.item(1).textContent)-1
             else
-                loh.parentNode.remove()
+                KillCard(loh.parentNode)
         }
         if (document.getElementById("right_mainhand").childElementCount > 1 && leftoffdamage > 0) {
             let a = applyhealth(parseInt(rmh.childNodes.item(2).childNodes.item(1).textContent),parseInt(leftoffdamage))
@@ -284,7 +298,7 @@ function nextround() {
             b.style.top = (rmh.parentNode.parentNode.offsetTop).toString() + "px"
             rmh.parentNode.parentNode.parentNode.append(b)},500)
 
-            if (a[0] == 0) rmh.parentNode.remove();
+            if (a[0] == 0) KillCard(rmh.parentNode)
             else rmh.childNodes.item(2).childNodes.item(1).textContent = a[0];
             leftoffdamage = a[1]
         }
@@ -296,7 +310,7 @@ function nextround() {
             b.style.top = (roh.parentNode.parentNode.offsetTop).toString() + "px"
             roh.parentNode.parentNode.parentNode.append(b)},500)
 
-            if (a[0] == 0) roh.parentNode.remove();
+            if (a[0] == 0) KillCard(roh.parentNode)
             else roh.childNodes.item(2).childNodes.item(1).textContent = a[0];
             leftmaindamage = a[1]
         }
@@ -308,7 +322,7 @@ function nextround() {
             b.style.top = (lmh.parentNode.parentNode.offsetTop).toString() + "px"
             lmh.parentNode.parentNode.parentNode.append(b)},500)
 
-            if (a[0] == 0) lmh.parentNode.remove();
+            if (a[0] == 0) KillCard(lmh.parentNode);
             else lmh.childNodes.item(2).childNodes.item(1).textContent = a[0];
             rightoffdamage = a[1]
         }
@@ -320,7 +334,7 @@ function nextround() {
             b.style.top = (loh.parentNode.parentNode.offsetTop).toString() + "px"
             loh.parentNode.parentNode.parentNode.append(b)},500)
 
-            if (a[0] == 0) loh.parentNode.remove();
+            if (a[0] == 0) KillCard(loh.parentNode);
             else loh.childNodes.item(2).childNodes.item(1).textContent = a[0];
             rightmaindamage = a[1]
         }
@@ -334,9 +348,13 @@ function nextround() {
         c.style.left = (document.getElementById("lefthealth").offsetLeft).toString() + "px"
         c.style.top = (document.getElementById("lefthealth").offsetTop).toString() + "px"
         document.getElementById("lefthealth").parentNode.append(c)
-        document.getElementById("lefthealth").childNodes.item(0).textContent = PlayerLeftHealth
-        document.getElementById("righthealth").childNodes.item(0).textContent = PlayerRightHealth
+        stats()
         Step = 0
+        setTimeout(()=>{
+            let a = document.getElementsByClassName("DamageIndicator")
+            for (let x = 0; x < a.length; x++)
+                a.item(x).remove()
+        },6000)
         if (PlayerLeftHealth <= 0 || PlayerRightHealth <= 0) {
             let a = document.createElement("div")
             let k = document.createElement("div")
@@ -372,19 +390,20 @@ carddefaults = [ // Card behavior, Image, Name, Attack, Use, Health, Rarity(Weig
     ["damageful","pistol.png","Pistol",15,5,1,5],
     ["damageful","shotgun.png","Shotgun",20,2,10,2],
     ["damageful","uzi.png","UZI",10,50,10,4],
+    ["damageful","spear.png","Spear",14,6,3,4],
+    ["damageful","katana.png","Katana",15,3,15,5],
+    ["damageful","mace.png","Mace",12,8,5,4],
     ["weapon","sword.png","Sword",8,"∞",10,8],
     ["weapon","dagger.png","Dagger",5,"∞",15,9],
     ["weapon","axe.png","Axe",10,"∞",8,7],
     ["weapon","bat.png","Bat",8,"∞",5,10],
-    ["legendary","cannon.png","Cannon",35,1,20,2],
+    ["legendary","cannon.png","Cannon",35,1,15,2],
     ["legendary","catapult.png","Catapult",30,3,10,3],
     ["legendary","bazo.png","RPG",35,1,5,1],
     ["legendary","wand.png","Magic Wand",20,20,2,1],
+    ["legendary","reaper.png","Reaper",15,6,30,1],
     ["defensive","shield.png","Shield",1,"∞",30,6],
     ["defensive","demon.png","Devil Armor",-5,20,100,1],
-    ["damageful","spear.png","Spear",14,6,3,4],
-    ["damageful","katana.png","Katana",15,"∞",15,5],
-    ["damageful","mace.png","Mace",12,8,5,4],
     ["other","bow.png","Bow",5,32,20,5],
 ]
 actioncards = [ // Card Color, Image, Card Name, Card Description, Rarity(Weight(The Bigger = The Easier To Obtain))
@@ -393,7 +412,8 @@ actioncards = [ // Card Color, Image, Card Name, Card Description, Rarity(Weight
     ["pink","reverse.png","Reverse",`Return the damage which your enemy was about to deal to you to itself`, 5],
     ["crimson","earthquake.png","Earthquake",`Shakes the ground, dealing 5 damage to every held card by players`, 3],
     ["red","cocktail.png","Molotov",`deals 3 damage to every held card by player, and halves use counts of enemy `, 3],
-    ["green","nuke.png","Nuke",`Demolishes all held weapons and deals 30 damage to both players`, 2],
+    ["chocolate","forceddeal.png","Forced Deal",`Swap a random card of yours with a random one from enemy(steal if enemy has none)`, 3],
+    ["green","nuke.png","Nuke",`Demolishes all held weapons and deals 30 damage to both players`, 1],
 ]
 function ObjCollision(obj1, obj2) {
     obj1.offsetBottom = obj1.offsetTop + obj1.offsetHeight;
@@ -423,6 +443,29 @@ function areacheck(item) {
     else if(ObjCollision(item,h) && item.parentNode.className=="rightside" && item.getAttribute("CardType") == "Action" && h.childElementCount <= 1) appendage(item,h);
     else if(ObjCollision(item,a) && item.parentNode.className=="leftside") appendage(item,a);
     else if(ObjCollision(item,b) && item.parentNode.className=="rightside") appendage(item,b);
+    stats()
+}
+function stats() {
+    let c = document.getElementById("left_offhand")
+    let d = document.getElementById("left_mainhand")
+    let e = document.getElementById("right_offhand")
+    let f = document.getElementById("right_mainhand")
+    dmgloh = 0; dmgroh = 0; dmglmh = 0; dmgrmh = 0 
+    hlthloh = 0; hlthroh = 0; hlthlmh = 0; hlthrmh = 0 
+    try {hlthloh = c.childNodes.item(1).childNodes.item(1).childNodes.item(2).childNodes.item(1).textContent} catch {}
+    try {hlthlmh = d.childNodes.item(1).childNodes.item(1).childNodes.item(2).childNodes.item(1).textContent} catch {}
+    try {hlthroh = e.childNodes.item(1).childNodes.item(1).childNodes.item(2).childNodes.item(1).textContent} catch {}
+    try {hlthrmh = f.childNodes.item(1).childNodes.item(1).childNodes.item(2).childNodes.item(1).textContent} catch {}
+    try {dmgloh = c.childNodes.item(1).childNodes.item(1).childNodes.item(0).childNodes.item(1).textContent} catch {}
+    try {dmglmh = d.childNodes.item(1).childNodes.item(1).childNodes.item(0).childNodes.item(1).textContent} catch {}
+    try {dmgroh = e.childNodes.item(1).childNodes.item(1).childNodes.item(0).childNodes.item(1).textContent} catch {}
+    try {dmgrmh = f.childNodes.item(1).childNodes.item(1).childNodes.item(0).childNodes.item(1).textContent} catch {}
+    document.getElementById("rightdefense").childNodes.item(0).textContent = parseInt(hlthrmh) + parseInt(hlthroh)
+    document.getElementById("leftdefense").childNodes.item(0).textContent = parseInt(hlthlmh) + parseInt(hlthloh)
+    document.getElementById("rightattack").childNodes.item(0).textContent = parseInt(dmgrmh) + parseInt(dmgroh)
+    document.getElementById("leftattack").childNodes.item(0).textContent = parseInt(dmglmh) + parseInt(dmgloh)
+    document.getElementById("lefthealth").childNodes.item(0).textContent = PlayerLeftHealth
+    document.getElementById("righthealth").childNodes.item(0).textContent = PlayerRightHealth
 }
 function selectme(event) {
     let a = event.target.parentNode;
@@ -474,9 +517,9 @@ function GetARandomCard() {
     if (randomize(0,1) == 1){actioncards.forEach((e)=>{a += e[4]}); b = "Action"}
     else{carddefaults.forEach((e)=>{a += e[6]}); b = "Weapon"}
     let c = randomize(0,a); StillNotSet = true
-    if (b == "Action") {actioncards.forEach((e)=>{if (c > 0) c -= e[4]; else if(StillNotSet) { Cardio = actioncardgen(e[0],e[1],e[2],e[3]); StillNotSet = false;}})}
-    else {carddefaults.forEach((e)=>{if (c > 0) c -= e[6]; else if(StillNotSet) {Cardio = cardgenerator(e[0],e[1],e[2],e[3],e[4],e[5]); StillNotSet = false;}})}
-    try{return Cardio} catch(e) {return "Somehow Something Somewhere breaksomely brokesome somethat somehow issome impossomble"}
+    if (b == "Action") {actioncards.forEach((e)=>{if (c-e[4] > 0) c -= e[4]; else if(StillNotSet) { Cardio = actioncardgen(e[0],e[1],e[2],e[3]); StillNotSet = false;}})}
+    else {carddefaults.forEach((e)=>{if (c-e[6] > 0) c -= e[6]; else if(StillNotSet) {Cardio = cardgenerator(e[0],e[1],e[2],e[3],e[4],e[5]); StillNotSet = false;}})}
+    try{return Cardio} catch(e) {console.log(e); return "Somehow Something Somewhere breaksomely brokesome somethat somehow issome impossomble"}
 }
 function addnewcard(a) {
     if (totalcards >= 50) {
@@ -608,25 +651,18 @@ HowToPlay = `
 Welcome, this is a card game if you didnt already know!
 well as you see there are 2 sides in the screen which are split by a line
 Left side is for player 1 and Right side for player 2 and who starts is random!
-As you see there is a card in top center with crossed swords thats the main card
-Each round you can click that button 3 times and it will give both players a card.
-You can also not click it(the total cards in the game is 100 and it wont change!)
-like if you like your cards and you dont want the other player to get good cards
+there is a card in top center with crossed swords thats the main card each round you can click that card 3 times and it will give both players a random card.
+You can also not click it(the total cards in the game is 100 and it wont change!) like if you dont want extra cards for now and are happy about them
 there are 2 types of card: Action cards, Weapon cards.
-Weapon cards are used in mainhand/offhand to deal damage or absorb(shield)
-Action cards are used in action part to do the thing which is written inside them
+Weapon cards are used in mainhand/offhand to deal damage or absorb(shield) and Action cards are used in action part to do the thing which is written inside them
 Weapon cards have health & attack & use count
 Health is the amount of damage your weapon can absorb from the enemy (Breaks if its 0)
 Use count is how many times you can use your weapon to deal damage (Breaks if its 0)
 Attack is how much damage you can deal to the enemy.
-The button you see in the center is the round button, if you have arranged your cards
-then click on it and then it will switch turns and its time your enemy arranges cards
-if both players have arranged have clicked the button then the fight begins
-mainhand only deals damage to mainhand of the enemy and so for offhand
-unless the weapon on that slot breaks! then the rest of the damage will be dealt to
-the other slot and if that also breaks(or is already broken) the rest will be dealt
-to you!, if your health reaches 0 you will lose the game, I guess thats all.
-Good luck!`.replace("\n","")
+The button you see in the center is the round(turn) button, if you have arranged your cards then click on it and then it will switch turns and its time your enemy arranges their cards
+if both players have arranged their cards and have clicked the button then the battle begins!
+mainhand only deals damage to mainhand of the enemy and so for offhand unless the weapon on that slot breaks! then the rest of the damage will be dealt to the other slot and if that also breaks(or is already broken) the rest will be dealt to you!, if your health reaches 0 you will lose the game, I guess thats all.
+Good luck!!!`.replace("\n","")
 About = `
 This is a Dynamic Card Game made by Jefferson!
 Special Thanks to Navid Abd, Random1785 for their epic ideas!
@@ -665,6 +701,10 @@ function infobutton() {
             break;
         case "3": case "about":
             alert(About)
+            break;
+        case "aprilfools":
+            document.getElementById("leftcards").append(cardgenerator("legendary","https://cdn3.emoji.gg/emojis/5746-happy.png","April Fools",999,999,999))
+            document.getElementById("rightcards").append(cardgenerator("legendary","https://cdn3.emoji.gg/emojis/5746-happy.png","April Fools",999,999,999))
             break;
         default:
             alert("You gotta enter either 1 or 2 or 3 or 'How to play' or 'Settings' or 'About'")
