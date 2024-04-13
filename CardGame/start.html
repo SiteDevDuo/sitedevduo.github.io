@@ -114,7 +114,7 @@
                     border-right: 10px solid tomato;
                 }
             }
-            body {
+            .techbody {
                 overflow: hidden hidden;
             }
             .startbutton:active {
@@ -231,7 +231,7 @@
                     a.setAttribute("VelocityX",-a.getAttribute("VelocityX"))
                 }
                 a.style.top = randomize(200,window.innerHeight-200) + "px"
-                document.body.append(a)
+                document.getElementById("techbody").append(a)
             }
             function loopcosmetic(delay = randomize(500,1000)) {
                 setTimeout(() =>{
@@ -275,6 +275,7 @@
         </script>
     </head>
     <body>
+        <div class="techbody" id ="techbody">
         <version>Version: 1.1.0</version>
         <h1 class="gametitle">Ultimate Battle Card Game</h1>
         <img src="logo.png" class="startcross">
@@ -301,6 +302,7 @@
                 </div>
             </div>
             <button class="exitbutton" onclick="closemenu()">X</button>
+        </div>
         </div>
         <script>
             spawnsomethingfornoreason()
