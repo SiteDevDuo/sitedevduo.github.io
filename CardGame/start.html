@@ -1,0 +1,306 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Jersey+20&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+        <style>
+            body {
+                background-image: radial-gradient(yellow,orange);
+            }
+            .startbutton {
+                box-sizing: border-box;
+                background-image: radial-gradient(orange,tomato);
+                border: 10px solid firebrick;
+                border-bottom: 10px solid tomato;
+                border-right: 10px solid tomato;
+                width: 100px;
+                height: 100px;
+                font-size: 50px;
+                border-radius: 100px;
+                left: 50%;
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                position: absolute;
+            }
+            .exitbutton {
+                box-sizing: border-box;
+                background-image: radial-gradient(red,darkred);
+                border: 2px solid crimson;
+                border-bottom: 2px solid firebrick;
+                border-right: 2px solid firebrick;
+                width: 30px;
+                height: 30px;
+                font-size: 15px;
+                border-radius: 100px;
+                left: 100%;
+                top: 0%;
+                font-family: "Inter", sans-serif;
+                font-weight: 500;
+                transform: translateX(-110%) translateY(10%);
+                position: absolute;
+                color: white;
+            }
+            @keyframes exithover {
+                0% {
+                    transform: translateX(-110%) translateY(10%) rotate(0deg);
+                }
+                100% {
+                    transform: translateX(-110%) translateY(10%) rotate(360deg);
+                }
+            }
+            .exitbutton:hover {
+                animation-name: exithover;
+                animation-duration: 500ms;
+                animation-fill-mode: forwards;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite; 
+            }
+            .startcross {
+                width: 200px;
+                height: 200px;
+                left: 50%;
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                position: absolute;
+            }
+            @keyframes starthover {
+                0% {
+                    transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(1);
+                    border: 10px solid firebrick;
+                    border-bottom: 10px solid tomato;
+                    border-right: 10px solid tomato;
+                }
+                80% {
+                    transform: translateX(-50%) translateY(-50%) rotate(400deg) scale(1.7);
+                    border: 10px solid rgb(89,17,17);
+                    border-bottom: 10px solid rgb(127,49,35);
+                    border-right: 10px solid rgb(127,49,35);
+                }
+                100% {
+                    transform: translateX(-50%) translateY(-50%) rotate(360deg) scale(1.4);
+                    border: 10px solid rgb(98,19,19);
+                    border-bottom: 10px solid rgb(140,54,38);
+                    border-right: 10px solid rgb(140,54,38);
+                }
+            }
+            .startbutton:hover {
+                animation-name: starthover;
+                animation-duration: 500ms;
+                animation-fill-mode: forwards;
+                animation-iteration-count: 1; 
+            }
+            @keyframes startactive {
+                0% {
+                    transform: translateX(-50%) translateY(-50%) scale(1.4);
+                    border: 10px solid rgb(98,19,19);
+                    border-bottom: 10px solid rgb(140,54,38);
+                    border-right: 10px solid rgb(140,54,38);
+                }
+                100% {
+                    transform: translateX(-50%) translateY(-50%) scale(1.7);
+                    border: 10px solid firebrick;
+                    border-bottom: 10px solid tomato;
+                    border-right: 10px solid tomato;
+                }
+            }
+            body {
+                overflow: hidden hidden;
+            }
+            .startbutton:active {
+                animation-name: startactive;
+                animation-duration: 250ms;
+                animation-fill-mode: forwards;
+                animation-timing-function: ease-in;
+                animation-iteration-count: 1;
+            }
+            .gametitle {
+                transform: translateX(-50%) translateY(-50%);
+                top: 10%;
+                left: 50%;
+                width: fit-content;
+                font-size: 4vw;
+                position: absolute;
+                font-family: "Jersey 20", sans-serif;
+            }
+            @keyframes idiotic {
+                0% {
+                    transform: translateX(-50%) translateY(-50%) rotate(0deg);
+                }
+                100% {
+                    transform: translateX(-50%) translateY(-50%) rotate(360deg);
+                }
+            }
+            .card {
+                animation-name: idiotic;
+                animation-delay: 0s;
+                animation-timing-function: linear;
+                animation-fill-mode: both;
+                animation-iteration-count: infinite;
+                position: absolute;
+                z-index: -5;
+            }
+            .modes {
+                transition: 400ms;
+                background-color: rgba(50,50,50,0.5);
+                width: 60vw;
+                height: 60vh;
+                border-radius: 10px;
+                left: 50%;
+                top: 50%;
+                display: flex;
+                transform: translateX(-50%) translateY(-50%) scale(0);
+                position: absolute;
+            }
+            .mode {
+                margin: auto;
+                width: 15vw;
+                height: 40vh;
+                border: 5px solid black;
+                border-radius: 10px;
+                transition: 500ms;
+            }
+            .mode:hover {
+                transform: scale(1.1);
+            }
+            .modepreview {
+                width: 100%;
+                height: 100%;
+                opacity: 1;
+                transition: 250ms;
+            }
+            .modepreview:hover img {
+                background-color: rgba(200,200,200,0.5);
+            }
+            .mpupperpart {
+                width: 100%;
+                height: 20%;
+                display: flex;
+                border-bottom: 5px solid black;
+                box-sizing: border-box;
+                background-color: rgb(50,50,50)
+            }
+            .mpupperpart * {
+                color: white;
+                margin: auto;
+                font-family: "Roboto Slab", serif;
+                font-size: 1.75vw;
+            }
+            .mpimage {
+                height: 80%;
+                display: flex;
+                background-color: rgb(50,50,50);
+                transition: 250ms;
+            }
+            .mpimage img {
+                margin: auto;
+                opacity: 1;
+                transition: 250ms;
+                width: 100%;
+                height: fit-content;
+                background-color: rgba(250,250,250,0.25);
+                border-radius: 10px;
+            }
+        </style>
+        <script src="index.js"></script>
+        <link href="index.css" rel="stylesheet">
+        <script>
+            // nemidoonam chera vali are
+            function randomize(min,max) {
+                return min + Math.floor(Math.random()*(max-min+1))
+            }
+            function spawnsomethingfornoreason() {
+                let a = GetARandomCard()
+                a.setAttribute("VelocityX",randomize(30,200))
+                a.setAttribute("VelocityY",randomize(20,40))
+                a.style.animationDuration = randomize(250,2000) + "ms"
+                if (randomize(0,1) == 0)
+                a.style.left = "-100px"
+                else {
+                    a.style.left = window.innerWidth-100 + "px"
+                    a.setAttribute("VelocityX",-a.getAttribute("VelocityX"))
+                }
+                a.style.top = randomize(200,window.innerHeight-200) + "px"
+                document.body.append(a)
+            }
+            function loopcosmetic(delay = randomize(500,1000)) {
+                setTimeout(() =>{
+                    if (document.getElementsByClassName("card").length < 10)
+                        spawnsomethingfornoreason()
+                    let b = document.getElementsByClassName("cardoverlay")
+                    for (let x = 0; x < b.length; x++)
+                        b.item(x).remove()
+                    loopcosmetic(randomize(500,1000))
+                },delay)
+            }
+            function ApplyVelocity(vel,num) {
+                if (vel - num <= 0)
+                    return 0
+                return vel-num
+            }
+            function loopmotion() {
+                setTimeout(() =>{
+                    let b = document.getElementsByClassName("card")
+                    for (let x = 0; x < b.length; x++) {
+                        let c = b.item(x)
+                        if (parseFloat(c.style.top.replace("px","")) > window.innerHeight+100)
+                            c.remove()
+                        if (parseFloat(c.style.left.replace("px","")) > window.innerWidth-c.getAttribute("VelocityX")/2)
+                            c.setAttribute("VelocityX",-Math.abs(c.getAttribute("VelocityX")));
+                        if (parseFloat(c.style.left.replace("px","")) < -c.getAttribute("VelocityX")/2)
+                            c.setAttribute("VelocityX",Math.abs(c.getAttribute("VelocityX")));
+                        c.style.left =( parseFloat(c.style.left.replace("px","")) + parseFloat(c.getAttribute("VelocityX"))/2 ) + "px"
+                        c.style.top =( parseFloat(c.style.top.replace("px","")) - parseFloat(c.getAttribute("VelocityY")) ) + "px"
+                        c.setAttribute("VelocityY",c.getAttribute("VelocityY")-2);
+                    }
+                    loopmotion()
+                },20)
+            }
+            function openmenu() {
+                document.getElementById("modes").style.transform = "translateX(-50%) translateY(-50%) scale(1)"
+            }
+            function closemenu() {
+                document.getElementById("modes").style.transform = "translateX(-50%) translateY(-50%) scale(0)"
+            }
+        </script>
+    </head>
+    <body>
+        <h1 class="gametitle">Ultimate Battle Card Game</h1>
+        <img src="logo.png" class="startcross">
+        <button class="startbutton" onclick="openmenu()">►</button>
+        <div class="modes" id="modes">
+            <div class="mode" onclick="window.location.href = `https://sitedevduo.github.io/CardGame?mode=Normal`">
+                <div class="modepreview">
+                    <div class="mpupperpart">
+                        <h2>Normal</h2>
+                    </div>
+                    <div class="mpimage">
+                        <img src="normal.png">
+                    </div>
+                </div>
+            </div>
+            <div class="mode" onclick="window.location.href = `https://sitedevduo.github.io/CardGame?mode=Buffed`">
+                <div class="modepreview">
+                    <div class="mpupperpart">
+                        <h2>Buffed</h2>
+                    </div>
+                    <div class="mpimage">
+                        <img src="buffed.png">
+                    </div>
+                </div>
+            </div>
+            <button class="exitbutton" onclick="closemenu()">X</button>
+        </div>
+        <script>
+            spawnsomethingfornoreason()
+            let b = document.getElementsByClassName("cardoverlay")
+            for (let x = 0; x < b.length; x++)
+                b.item(x).remove()
+            loopmotion()
+            loopcosmetic()
+        </script>
+    </body>
+</html>

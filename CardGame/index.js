@@ -1,6 +1,24 @@
 function randomize(min,max) {
     return min + Math.floor(Math.random()*(max-min+1))
 }
+function mode_ifier() {
+    let mode = new URLSearchParams(window.location.search).get("mode");
+    console.log(mode)
+    if (mode == "Normal")
+        console.log("welp ok idc")
+    if (mode == "Buffed") {
+        PlayerLeftHealth*=PlayerLeftHealth/2
+        PlayerRightHealth*=PlayerRightHealth/2
+        for (let x = 0; x < carddefaults.length; x++) {
+            if (carddefaults[x][3] != "∞")
+                carddefaults[x][3] *= Math.abs(carddefaults[x][3])
+            if (carddefaults[x][4] != "∞")
+                carddefaults[x][4] *= Math.abs(carddefaults[x][4])
+            if (carddefaults[x][5] != "∞")
+                carddefaults[x][5] *= Math.abs(carddefaults[x][5])
+        }
+    }
+}
 totalcards = 0
 pickmeup = ""
 pickmeuplogic = false
@@ -726,3 +744,4 @@ function infobutton() {
             break;
     }
 }
+mode_ifier()
