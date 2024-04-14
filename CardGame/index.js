@@ -18,7 +18,22 @@ function mode_ifier() {
                 carddefaults[x][5] *= Math.abs(carddefaults[x][5])
         }
     }
+    if (mode=="DeathTouch") {
+        cardlimitperround = 5
+        PlayerLeftHealth = 1
+        PlayerRightHealth = 1
+        for (let x = 0; x < carddefaults.length; x++) {
+            if (carddefaults[x][5] != "∞")
+            carddefaults[x][5] *= 2
+        }
+    }
+    if (mode=="Rich") {
+        cardlimitperround = 5   
+        totalcardsingame = 500
+    }
 }
+totalcardsingame = 100
+cardlimitperround = 2
 totalcards = 0
 pickmeup = ""
 pickmeuplogic = false
@@ -554,11 +569,11 @@ function GetARandomCard() {
     try{return Cardio} catch(e) {console.log(e); return "Somehow Something Somewhere breaksomely brokesome somethat somehow issome impossomble"}
 }
 function addnewcard(a) {
-    if (totalcards >= 50) {
+    if (totalcards >= totalcardsingame/2) {
         a.target.parentNode.remove()
         StopGeneratingCards = true
     }
-    if (Limiter >= 5) {
+    if (Limiter >= cardlimitperround+3) {
         a.target.parentNode.remove()
     }
     document.getElementById("leftcards").append(GetARandomCard())

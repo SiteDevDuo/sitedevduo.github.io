@@ -165,7 +165,7 @@
             }
             .mode {
                 margin: auto;
-                width: 15vw;
+                width: 12vw;
                 height: 40vh;
                 border: 5px solid black;
                 border-radius: 10px;
@@ -393,7 +393,7 @@
     </head>
     <body>
         <div class="GodDamnMobileSucks" id="GDMS">
-            <version>Version: 1.2.1</version>
+            <version>Version: 1.3.2</version>
             <button class="otherbuttonsbutton" onclick="if (toggleotherbuttons) {document.getElementById(`otherbuttons`).style = `transform: translateX(-102%) translateY(-110%) scaleX(1);`; toggleotherbuttons = false} else {toggleotherbuttons = true; document.getElementById(`otherbuttons`).style = ``}">≡</button>
             <div class="otherbuttons" id="otherbuttons">
                 <button class="thabutton infobutton" onclick="alert(About)">i</button>
@@ -414,6 +414,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="mode" onclick="window.location.href = `https://sitedevduo.github.io/CardGame?mode=DeathTouch`">
+                    <div class="modepreview">
+                        <div class="mpupperpart">
+                            <h2>Death Touch</h2>
+                        </div>
+                        <div class="mpimage">
+                            <img src="deathtouch.png">
+                        </div>
+                    </div>
+                </div>
                 <div class="mode" onclick="window.location.href = `https://sitedevduo.github.io/CardGame?mode=Buffed`">
                     <div class="modepreview">
                         <div class="mpupperpart">
@@ -421,6 +431,16 @@
                         </div>
                         <div class="mpimage">
                             <img src="buffed.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="mode" onclick="window.location.href = `https://sitedevduo.github.io/CardGame?mode=Rich`">
+                    <div class="modepreview">
+                        <div class="mpupperpart">
+                            <h2>Richest</h2>
+                        </div>
+                        <div class="mpimage">
+                            <img src="richest.png">
                         </div>
                     </div>
                 </div>
