@@ -117,6 +117,10 @@ function nextround() {
                 rightmaindamage = 0
                 rightoffdamage = 0
             }
+            if (a=="Arrow Rain") {
+                leftmaindamage += 5
+                leftoffdamage += 5
+            }
             if (a == "Robber") {
                 let b = roh.parentNode.cloneNode()
                 b.innerHTML = roh.parentNode.innerHTML
@@ -165,6 +169,12 @@ function nextround() {
                 rightmaindamage = -Math.abs(rightmaindamage)
                 rightoffdamage = -Math.abs(rightoffdamage)
             }
+            if (a=="Waste Time") {
+                rightmaindamage = 0
+                rightoffdamage = 0
+                leftoffdamage = 0
+                leftmaindamage = 0
+            }
             if (a == "Nuke") {
                 let dealdmg = (dmg,obj)=>{
                     let b = showoffdamage(dmg)
@@ -195,6 +205,10 @@ function nextround() {
                 leftmaindamage = 0
                 leftoffdamage = 0
             }
+            if (a=="Arrow Rain") {
+                rightmaindamage += 5
+                rightoffdamage += 5
+            }
             if (a == "Forced Deal") {
                 let cardleft = document.getElementById("leftcards").childNodes.item(randomize(0,document.getElementById("leftcards").childNodes.length-1))
                 let cardright = document.getElementById("rightcards").childNodes.item(randomize(0,document.getElementById("rightcards").childNodes.length-1))
@@ -206,6 +220,12 @@ function nextround() {
                 b.innerHTML = loh.parentNode.innerHTML
                 loh.parentNode.remove()
                 document.getElementById("rightcards").append(b)
+            }
+            if (a=="Waste Time") {
+                rightmaindamage = 0
+                rightoffdamage = 0
+                leftoffdamage = 0
+                leftmaindamage = 0
             }
             if (a == "Earthquake") {
                 let dealdmg = (dmg,obj)=>{
@@ -435,16 +455,19 @@ carddefaults = [ // Card behavior, Image, Name, Attack, Use, Health, Rarity(Weig
     ["damageful","pistol.png","Pistol",15,5,1,5],
     ["damageful","shotgun.png","Shotgun",20,2,10,2],
     ["damageful","uzi.png","UZI",10,50,10,4],
+    ["damageful","blaster.png","Blaster",12,20,10,2],
     ["damageful","spear.png","Spear",14,6,3,4],
     ["damageful","katana.png","Katana",15,3,15,5],
     ["damageful","mace.png","Mace",12,8,5,4],
     ["weapon","sword.png","Sword",8,"∞",10,8],
     ["weapon","dagger.png","Dagger",5,"∞",15,9],
     ["weapon","axe.png","Axe",10,"∞",8,7],
+    ["weapon","hammer.png","Hammer",15,"∞",2,5],
     ["weapon","bat.png","Bat",8,"∞",5,10],
     ["legendary","cannon.png","Cannon",35,1,15,2],
     ["legendary","catapult.png","Catapult",30,3,10,3],
     ["legendary","bazo.png","RPG",35,1,5,1],
+    ["legendary","fist.png","Firey Fist",15,"∞",15,1],
     ["legendary","wand.png","Magic Wand",20,20,2,1],
     ["legendary","reaper.png","Reaper",15,6,30,1],
     ["legendary","demonclaw.png","Devil Claw",30,"∞",0,1], // The best weapon to use against Devil Armor I AM SUCH A STRATOGIAST GENIOS!
@@ -455,9 +478,11 @@ carddefaults = [ // Card behavior, Image, Name, Attack, Use, Health, Rarity(Weig
 actioncards = [ // Card Color, Image, Card Name, Card Description, Rarity(Weight(The Bigger = The Easier To Obtain))
     ["aqua","robbery.png","Robber",`Secretly steal your enemy's offhand item after the battle O.o`,2],
     ["orange","force_field.png","Barrier",`Creates a barrier around you which protects you from the next 20 damage`,5],
-    ["pink","reverse.png","Reverse",`Return the damage which your enemy was about to deal to you to itself`, 3],
+    ["pink","reverse.png","Reverse",`Return the damage which your enemy was about to deal to you to itself`, 2],
     ["crimson","earthquake.png","Earthquake",`Shakes the ground, dealing 5 damage to every held card by players`, 3],
+    ["firebrick","wastetime.png","Waste Time",`Once used no weapon deals any damage in the round being(tho they use durability)`, 4],
     ["red","cocktail.png","Molotov",`deals 3 damage to every held card by player, and halves use counts of enemy `, 3],
+    ["lightblue","arrowrain.png","Arrow Rain",`deals 5 damage to every held enemy card`, 2],
     ["chocolate","forceddeal.png","Forced Deal",`Swap a random card of yours with a random one from enemy(steal if enemy has none)`, 3],
     ["darkred","sryinge.png","Healing Bullet",`All dealt damage in this round will be healing attack (both yours and the enemy)`, 2], // dont complain about sryinge I was too bored to fix it lol (jk it was intentional)
     ["green","nuke.png","Nuke",`Demolishes all held weapons and deals 30 damage to both players`, 1],
