@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300&display=swap" rel="stylesheet">
@@ -114,10 +115,8 @@
                     border-right: 10px solid tomato;
                 }
             }
-            .techbody {
-                overflow: hidden;
-                width:100%;
-                height:100%;
+            body {
+                overflow: hidden hidden;
             }
             .startbutton:active {
                 animation-name: startactive;
@@ -213,10 +212,124 @@
                 background-color: rgba(250,250,250,0.25);
                 border-radius: 10px;
             }
+            body {
+                padding: 0px;
+                margin: 0px;
+            }
+            .GodDamnMobileSucks {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                margin: 0px;
+                padding: 0px;
+                z-index: -100;
+            }
+            .otherbuttonsbutton {
+                position: absolute;
+                z-index: 10;
+                width: 60px;
+                height: 60px;
+                font-size: 30px;
+                font-family: "Inter", sans-serif;
+                top: 100%;
+                background-image: radial-gradient(indigo,purple);
+                color: white;
+                border: 5px solid tomato;
+                border-bottom: 5px solid firebrick;
+                border-right: 5px solid firebrick;
+                box-sizing: border-box;
+                border-radius: 50px;
+                left: 100%;
+                transform: translateY(-110%) translateX(-110%);
+                transition: 500ms;
+            }
+            .otherbuttonsbutton:hover {
+                transition: 500ms;
+                border: 5px solid red;
+                border-bottom: 5px solid darkred;
+                border-right: 5px solid darkred;
+                transform: translateY(-110%) translateX(-110%);
+                font-size: 35px;
+            }
+            .otherbuttons {
+                display: flex;
+                background-color: gray;
+                border-radius: 50px;
+                height: 60px;
+                width: 300px;
+                position: absolute;
+                transform: translateX(-62%) translateY(-110%) scaleX(0);
+                left: 100%;
+                top:100%;
+                border: 2px solid black;
+                box-sizing: border-box;
+                z-index: 1;
+                transition: 500ms;
+            }
+            .thabutton {
+                margin: auto;
+                width: 50px;
+                height: 50px;
+                font-size: 30px;
+                box-sizing: border-box;
+                border-radius: 50px;
+                transition: 500ms;
+                transform: scale(1);
+            }
+            @keyframes mouseonthabutton {
+                0% {
+                    transform: rotate(0deg) scale(1.1);
+                }
+                25% {
+                    transform: rotate(10deg) scale(1.1);
+                }
+                50% {
+                    transform: rotate(0deg) scale(1.1);
+                }
+                75% {
+                    transform: rotate(-10deg) scale(1.1);
+                }
+                100% {
+                    transform: rotate(0deg) scale(1.1);
+                }
+            }
+            .thabutton:hover {
+                animation-name: mouseonthabutton;
+                animation-duration: 500ms;
+                animation-timing-function: linear;
+                animation-fill-mode: forwards;
+                animation-iteration-count: infinite;
+            }
+            .infobutton {
+                font-family: "Jersey 20", sans-serif;
+                background-image: radial-gradient(blue,darkblue);
+                color: white;
+                border: 5px solid darkblue;
+                border-bottom: 5px solid darkslateblue;
+                border-right: 5px solid darkslateblue;
+            }
+            .discbutton {
+                font-family: "Jersey 20", sans-serif;
+                background-image: radial-gradient(white,white,gray);
+                color: white;
+                border: 5px solid darkgray;
+                border-bottom: 5px solid lightgray;
+                border-right: 5px solid lightgray;
+            }
+            .discbutton img {
+                width: 25px;
+                height: fit-content;
+            }
+            something {
+                margin: auto;
+                width: 50px;
+                height: 50px;
+            }
         </style>
         <script src="index.js"></script>
         <link href="index.css" rel="stylesheet">
         <script>
+            toggleotherbuttons = true
             // nemidoonam chera vali are
             function randomize(min,max) {
                 return min + Math.floor(Math.random()*(max-min+1))
@@ -229,11 +342,11 @@
                 if (randomize(0,1) == 0)
                 a.style.left = "-100px"
                 else {
-                    a.style.left = window.innerWidth-100 + "px"
+                    a.style.left = ScreenWidth-100 + "px"
                     a.setAttribute("VelocityX",-a.getAttribute("VelocityX"))
                 }
-                a.style.top = randomize(200,window.innerHeight-200) + "px"
-                document.getElementById("techbody").append(a)
+                a.style.top = randomize(200,ScreenHeight-200) + "px"
+                document.getElementById("GDMS").append(a)
             }
             function loopcosmetic(delay = randomize(500,1000)) {
                 setTimeout(() =>{
@@ -251,15 +364,17 @@
                 return vel-num
             }
             function loopmotion() {
+                ScreenWidth = window.innerWidth
+                ScreenHeight = window.innerHeight
                 setTimeout(() =>{
                     let b = document.getElementsByClassName("card")
                     for (let x = 0; x < b.length; x++) {
                         let c = b.item(x)
-                        if (parseFloat(c.style.top.replace("px","")) > window.innerHeight+100)
+                        if (parseFloat(c.style.top.replace("px","")) > ScreenHeight+100)
                             c.remove()
-                        if (parseFloat(c.style.left.replace("px","")) > window.innerWidth-c.getAttribute("VelocityX")/2)
+                        if (parseFloat(c.style.left.replace("px","")) > ScreenWidth)
                             c.setAttribute("VelocityX",-Math.abs(c.getAttribute("VelocityX")));
-                        if (parseFloat(c.style.left.replace("px","")) < -c.getAttribute("VelocityX")/2)
+                        if (parseFloat(c.style.left.replace("px","")) < 0)
                             c.setAttribute("VelocityX",Math.abs(c.getAttribute("VelocityX")));
                         c.style.left =( parseFloat(c.style.left.replace("px","")) + parseFloat(c.getAttribute("VelocityX"))/2 ) + "px"
                         c.style.top =( parseFloat(c.style.top.replace("px","")) - parseFloat(c.getAttribute("VelocityY")) ) + "px"
@@ -277,42 +392,47 @@
         </script>
     </head>
     <body>
-        <div class="techbody" id ="techbody">
-        <version>Version: 1.1.1</version>
-        <h1 class="gametitle">Ultimate Battle Card Game</h1>
-        <img src="logo.png" class="startcross">
-        <button class="startbutton" onclick="openmenu()">►</button>
-        <div class="modes" id="modes">
-            <div class="mode" onclick="window.location.href = `https://sitedevduo.github.io/CardGame?mode=Normal`">
-                <div class="modepreview">
-                    <div class="mpupperpart">
-                        <h2>Normal</h2>
-                    </div>
-                    <div class="mpimage">
-                        <img src="normal.png">
+        <div class="GodDamnMobileSucks" id="GDMS">
+            <version>Version: 1.2.1</version>
+            <button class="otherbuttonsbutton" onclick="if (toggleotherbuttons) {document.getElementById(`otherbuttons`).style = `transform: translateX(-102%) translateY(-110%) scaleX(1);`; toggleotherbuttons = false} else {toggleotherbuttons = true; document.getElementById(`otherbuttons`).style = ``}">≡</button>
+            <div class="otherbuttons" id="otherbuttons">
+                <button class="thabutton infobutton" onclick="alert(About)">i</button>
+                <button class="thabutton discbutton" onclick="alert(`Discord ID: mr.jeferson`)"><img src="discord.png"></button>
+                <something></something>
+            </div>
+            <h1 class="gametitle">Ultimate Battle Card Game</h1>
+            <img src="logo.png" class="startcross">
+            <button class="startbutton" onclick="openmenu()">►</button>
+            <div class="modes" id="modes">
+                <div class="mode" onclick="window.location.href = `https://sitedevduo.github.io/CardGame?mode=Normal`">
+                    <div class="modepreview">
+                        <div class="mpupperpart">
+                            <h2>Normal</h2>
+                        </div>
+                        <div class="mpimage">
+                            <img src="normal.png">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="mode" onclick="window.location.href = `https://sitedevduo.github.io/CardGame?mode=Buffed`">
-                <div class="modepreview">
-                    <div class="mpupperpart">
-                        <h2>Buffed</h2>
-                    </div>
-                    <div class="mpimage">
-                        <img src="buffed.png">
+                <div class="mode" onclick="window.location.href = `https://sitedevduo.github.io/CardGame?mode=Buffed`">
+                    <div class="modepreview">
+                        <div class="mpupperpart">
+                            <h2>Buffed</h2>
+                        </div>
+                        <div class="mpimage">
+                            <img src="buffed.png">
+                        </div>
                     </div>
                 </div>
+                <button class="exitbutton" onclick="closemenu()">X</button>
             </div>
-            <button class="exitbutton" onclick="closemenu()">X</button>
+            <script>
+                let b = document.getElementsByClassName("cardoverlay")
+                for (let x = 0; x < b.length; x++)
+                    b.item(x).remove()
+                loopmotion()
+                loopcosmetic()
+            </script>
         </div>
-        </div>
-        <script>
-            spawnsomethingfornoreason()
-            let b = document.getElementsByClassName("cardoverlay")
-            for (let x = 0; x < b.length; x++)
-                b.item(x).remove()
-            loopmotion()
-            loopcosmetic()
-        </script>
     </body>
 </html>
