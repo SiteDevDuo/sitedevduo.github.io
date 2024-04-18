@@ -1,0 +1,158 @@
+<html>
+    <head>
+        <style>
+            body {
+                background-image: radial-gradient(darkgreen,rgb(10,50,10));
+            }
+            .board {
+                width: min(80vw,80vh);
+                height: min(80vw,80vh);
+                background-color: black;
+                left: 50%;
+                top: 50%;
+                position: absolute;
+                box-shadow: 0px 0px 20px black;
+                transform: translateX(-50%) translateY(-50%);
+            }
+            .boardroom {
+                transition: 100ms;
+                width: min(10vw,10vh);
+                height: min(10vw,10vh);
+                box-sizing: border-box;
+                display: inline-block;
+                overflow: hidden;
+            }
+            .checkerspiece {
+                width: 80%;
+                height: 80%;
+                margin-left: min(1vw,1vh);
+                margin-top: min(1vw,1vh);
+                border-radius: 100px;
+                box-sizing: border-box;
+            }
+            .BColor {
+                transition: 500ms;
+                background-image: radial-gradient(black,rgb(55,55,55));
+            }
+            .WColor {
+                background-image: radial-gradient(white,rgb(200,200,200));
+            }
+            .RPColor {
+                background-image: radial-gradient(rgb(100,0,0),rgb(150,0,0));
+                border: 5px solid rgb(205,0,0);
+            }
+            .BPColor {
+                background-image: radial-gradient(rgb(0,0,100),rgb(0,0,150));
+                border: 5px solid rgb(0,0,205);
+            }
+            .boldout {
+                background-image: radial-gradient(yellow,orange);
+                border: 2px solid orangered;
+            }
+            h1{
+                color: white;
+            }
+        </style>
+        <script>
+            function start() {
+                Board = document.getElementsByClassName("board").item(0)
+                for (let x = 1; x <= 8; x++) { // creating the board rooms(black and whites)
+                    for (let y = 1; y <= 8; y++) {
+                        let a = document.createElement("div")
+                        a.className = "boardroom"
+                        a.setAttribute("moveslot","-1")
+                        a.setAttribute("onclick","movething(event.target)")
+                        if ((y+x-1)%2==0) a.className += " BColor"; else a.className += " WColor";
+                        Board.append(a)
+                    }
+                }
+                for (let x = 1; x <= 8; x++) { // creating pieces
+                    for (let y = 1; y <= 8; y++) {
+                        if ((y+x-1)%2==0) {
+                            let a = document.createElement("div")
+                            a.className = "checkerspiece"
+                            a.setAttribute("onclick","move(event.target)")
+                            if (x < 4) a.className += " RPColor"; 
+                            else if (x > 5) a.className += " BPColor";
+                            if (x<4 || x>5)
+                                Board.childNodes.item((x-1)*8+y).append(a);
+                        }
+                    }
+                }
+            }
+            function movething(obj) {
+                if (obj.className.startsWith("boardroom")) {
+                    let slot = obj.getAttribute("moveslot")
+                    if (slot > -1) {
+                        Board = document.getElementsByClassName("board").item(0)
+                        obj.append(Board.childNodes.item(slot).childNodes.item(0))
+                        stopbolding()
+                    }
+                }
+            }
+            function stopbolding() {
+                let t = document.getElementsByClassName("boldout");
+                let tlen = t.length;
+                let poppes = 0
+                for (let x = 0; x < tlen; x++) {t.item(x-poppes).setAttribute("moveslot",-1); t.item(x-poppes).className = t.item(x-poppes).className.replaceAll("boldout",""); poppes++}
+            }
+            function RemoveElement(arr,i) {
+                let a = []
+                for (let x = 0; x < arr.length; x++)
+                    if (x != i)
+                        a.push(arr[x])
+                return a
+            }
+            function move(obj) {
+                let poppes = 0
+                stopbolding()
+                Board = obj.parentNode.parentNode
+                Room = obj.parentNode
+                Movable = []
+                let slot = Array.prototype.indexOf.call(Board.children, Room)+1;
+                if (obj.classList[1] == "BPColor") {
+                    if ((slot-1)%8 != 0) Movable.push(slot-9)
+                    if ((slot-1)%8 != 7) Movable.push(slot-7)
+                }
+                else if (obj.classList[1] == "RPColor") {
+                    if ((slot-1)%8 != 0) Movable.push(slot+7)
+                    if ((slot-1)%8 != 7) Movable.push(slot+9)
+                }
+                let Movlen = Movable.length
+                poppes = 0;
+                console.log(Movable)
+                for (let x = 0; x<Movlen;x++) {
+                    try {if (Board.childNodes.item(Movable[x-poppes]).childNodes.item(0).className.includes("RPColor") && obj.className.includes("BPColor") ) {
+                        Board.childNodes.item(Movable[x-poppes]).childNodes.item(0).remove()
+                        if (slot-8 < Movable[x-poppes])
+                            Movable[x-poppes]-=7
+                        else
+                            Movable[x-poppes]-=9
+                    }} catch {}
+                    try {if (Board.childNodes.item(Movable[x-poppes]).childNodes.item(0).className.includes("BPColor") && obj.className.includes("RPColor") ) {
+                        Board.childNodes.item(Movable[x-poppes]).childNodes.item(0).remove()
+                        if (slot+8 < Movable[x-poppes])
+                            Movable[x-poppes]+=9
+                        else
+                            Movable[x-poppes]+=7
+                    }} catch {}
+                }
+                poppes = 0;
+                for (let x = 0; x<Movlen;x++)try { if (Board.childNodes.item(Movable[x-poppes]).childNodes.item(0).className.startsWith("checkerspiece") || Movable[x-poppes] > 63 || Movable[x-poppes] < 0) {Movable = RemoveElement(Movable,x-poppes); poppes++}}catch {}
+                for (let x = 0; x<Movlen-poppes;x++) {
+                    Board.childNodes.item(Movable[x]).className += " boldout"
+                    Board.childNodes.item(Movable[x]).setAttribute("moveslot",slot)
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h1>THIS PROJECT IS CANCELED FOR NOW</h1>
+        <div class="board">
+            
+        </div>
+        <script>
+            start()
+        </script>
+    </body>
+</html>

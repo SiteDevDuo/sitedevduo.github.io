@@ -1,0 +1,216 @@
+<html>
+    <head>
+        <style>
+            body {
+                transition: 500ms;
+            }
+            .redturn {
+                background-image: radial-gradient(darkred,rgb(50,10,10));
+            }
+            .blueturn {
+                background-image: radial-gradient(darkblue,rgb(10,10,50));
+            }
+            .board {
+                height: min(80vw,80vh);
+                width: min(80vw,80vh);
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                background-color: black;
+                border-radius: min(5vw,5vh);
+                overflow: hidden;
+            }
+            .boardoverlay {
+                height: min(80vw,80vh);
+                width: min(80vw,80vh);
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform:translateX(-50%) translateY(-50%);
+                background-color: rgba(0,0,0,0.1);
+                border-radius: min(5vw,5vh);
+                z-index: 10;
+            }
+            .boardcolumn {
+                height: 100%;
+                display: inline-block;
+                box-sizing: border-box;
+            }
+            .boardslot {
+                border-right: min(0.5vw,0.5vh) solid white;
+                background-color: rgb(10,10,10);
+                overflow: hidden;
+            }
+            .boardslot div {
+                width: 80%;
+                height: 80%;
+            }
+            .buttons {
+                width: min(80vw,80vh);
+                left: 50%;
+                top: min(7.5vw,7.5vh);
+                position: absolute;
+                transform: translateX(-50%) translateY(-50%);
+                background-color: rgba(30,30,30);
+                border-radius: min(80vw,80vh);
+            }
+            .insertbutton {
+                transition: 100ms;
+                background-color: rgb(50,50,50);
+                color: white;
+                border: 2px solid gray;
+                box-sizing: border-box;
+                border-radius: min(5vw,5vh);
+            }
+            .insertbutton:hover {
+                background-color: rgb(100,100,100);
+                color: white;
+                border: 2px solid black;
+            }
+            .insertbutton:active {
+                background-color: rgb(150,150,150);
+                color: white;
+                border: 2px solid white;
+            }
+            .insertbutton:disabled {
+                background-color: gray;
+                color: darkgray;
+                opacity: 0;
+            }
+            h1 {
+                position: absolute;
+                color: white;
+                left: 50%;
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                z-index: 100;
+            }
+        </style>
+        <script>
+            column = 7
+            rows = 6
+            board = []
+            teamnames = ["Red","Blue"]
+            function min(a,b) {
+                if (a > b)
+                    return b
+                return a
+            }
+            function winlogic() {
+                for (let y = 0; y < column; y++) {
+                    for (let x=0; x < rows; x++) {
+                        for (let k=1; k<=2; k++) {
+                            if (board[y][x] == k) {
+                                if ((x+3 <= rows) && (board[y][x+1] == k && board[y][x+2] == k && board[y][x+3] == k)) // case 1: straight path " - "
+                                    return [true,teamnames[k-1],[x,y],1] // Win/Lose , Winner Team Name, POS , Case
+                                if ((y+3 <= column && x+3 <= rows) && (board[y+1][x+1] == k && board[y+2][x+2] == k && board[y+3][x+3] == k)) // case 2: diagonal(upwards) path " / "
+                                    return [true,teamnames[k-1],[x,y],2] // Win/Lose , Winner Team Name, POS , Case
+                                if ((y-3 >= 0 && x+3 <= rows) && (board[y-1][x+1] == k && board[y-2][x+2] == k && board[y-3][x+3] == k)) // case 3: diagonal(downwards) path " \ "
+                                    return [true,teamnames[k-1],[x,y],3] // Win/Lose , Winner Team Name, POS , Case
+                                if ((y+3 <= column) && (board[y+1][x] == k && board[y+2][x] == k && board[y+3][x] == k)) // case 3: wall path " | "
+                                    return [true,teamnames[k-1],[x,y],4] // Win/Lose , Winner Team Name, POS , Case
+                                // other cases? not needed lol these are enough since we dont have any unknowns!
+                            }
+                        }
+                    }
+                }
+                return [false]
+            }
+            function renderer() {
+                let c = document.getElementsByClassName("boardcolumn")
+                for (let x = 0; x < column; x++) {
+                    let r = c.item(x).childNodes
+                    for (let y = rows-1; y >= 0; y--) {
+                        switch (board[x][rows-y-1]) {
+                            case 0: r.item(y).childNodes.item(0).style.backgroundColor = "rgb(20,20,20)"; break;
+                            case 1: r.item(y).childNodes.item(0).style.backgroundColor = "rgb(200,20,20)"; break;
+                            case 2: r.item(y).childNodes.item(0).style.backgroundColor = "rgb(20,20,200)"; break;
+                        }
+                    }
+                }
+            }
+            function insertpiece(i) {
+                let turn = document.body.className.replace("turn","")
+                if (turn == "red") {
+                    document.body.className = "blueturn"
+                    let c = document.getElementsByClassName("insertbutton")
+                    for (let x = 0; x < c.length; x++) c.item(x).textContent = "Insert Blue"
+                    for (let x = 0; x < rows; x++) if (board[i][x] == 0) {board[i][x] = 1; break;}
+                } else {
+                    document.body.className = "redturn"
+                    let c = document.getElementsByClassName("insertbutton")
+                    for (let x = 0; x < c.length; x++) c.item(x).textContent = "Insert Red"
+                    for (let x = 0; x < rows; x++) if (board[i][x] == 0) {board[i][x] = 2; break;}
+                }
+                hasntempty = true
+                for (let x = 0; x < rows; x++) if (board[i][x] == 0) {hasntempty = false; break;}
+                if (hasntempty) {
+                    document.getElementById("buttons").childNodes.item(i).disabled = true
+                }
+                renderer()
+                let w = winlogic();
+                if (w[0]) {
+                    winthingweeee(w)
+                }
+            }
+            function winthingweeee(w) {
+                let overlay = document.getElementById("boardoverlay")
+                let c = document.createElement("h1")
+                c.textContent = `${w[1]} WON!!!`
+                document.body.append(c)
+                document.getElementById("buttons").remove()
+                overlay.style = "opacity:1;"
+                if (overlay.getContext("2d")) {
+                    /*
+                    let draw = overlay.getContext("2d")
+                    draw.fillStyle = "rgb(255,255,255)"
+                    switch (w[3]) { // let me remind you what you see in page is 90 degrees different than the array stored so swapping x and y is neccessary!
+                        case 1:
+                            draw.fillRect(504/column * (w[2][1]) + 504/(column*2)-10, (504/rows * (rows-w[2][0]*2) - 504/(rows*2))/2,20,504/rows*4-504/(rows));
+                            break;
+                        case 4: 
+                            draw.fillRect(504/column * (w[2][1]) + 504/(column*2) , 504/rows * (rows-w[2][0]*1.04) - 504/(rows*2),504/column*4-504/(column),20); 
+                            break;
+                    }
+                    */
+                }
+            }
+            function start() {
+                for (let y=0; y < column; y++) {board.push([]); for (let x=0; x < rows; x++) {board[y].push(0)}} // 0,1,2 in order are empty, red, blue
+                for (let i=0; i < column; i++) {
+                    let a = document.createElement("div")
+                    a.className = "boardcolumn"
+                    a.style = "width: min(" + 80/column + "vw," + 80/column + "vh);"
+                    for (let x=0; x < rows; x++) {
+                        console.log("a")
+                        let b = document.createElement("div")
+                        b.className = "boardslot"
+                        b.style = "width: min(" + min(80/rows,80/column) + "vw," + min(80/rows,80/column) + "vh); height: min(" + min(80/rows,80/column) + "vw," + min(80/rows,80/column) + "vh); margin-bottom:min(" + min(80/rows,80/column)/(column-2) + "vw," + min(80/rows,80/column)/(column-2) + "vh);"
+                        let c = document.createElement("div")
+                        c.style = "width: min(" + min(80/rows,80/column)*0.8 + "vw," + min(80/rows,80/column)*0.8 + "vh); height: min(" + min(80/rows,80/column)*0.8 + "vw," + min(80/rows,80/column)*0.8 + "vh); margin-left: min(" + min(80/rows,80/column)*0.1 + "vw," + min(80/rows,80/column)*0.1 + "vh); margin-top: min(" + min(80/rows,80/column)*0.1 + "vw," + min(80/rows,80/column)*0.1 + "vh); border-radius: min(" + min(80/rows,80/column)*0.8 + "vw," + min(80/rows,80/column)*0.8 + "vh);"
+                        c.id = `BoardSlot(${x},${i})`
+                        b.append(c)
+                        a.append(b)
+                    }
+                    document.getElementById("board").append(a)
+                    let d = document.createElement("button")
+                    d.style = "width: min(" + 80/column + "vw," + 80/column + "vh); height: min(5vw,5vh);"
+                    d.className = "insertbutton"
+                    d.textContent = "Insert Red"
+                    d.setAttribute("onclick",`insertpiece(${i})`)
+                    document.getElementById("buttons").append(d)
+                }
+                renderer()
+            }
+        </script>
+    </head>
+    <body class="redturn">
+        <div class="board" id="board"></div>
+        <canvas class="boardoverlay" id="boardoverlay" style="opacity:0;" width="504" height="504"></canvas> <!--504 is divisible by 6 and 7 and I like it which is ENOUGH! lol-->
+        <div class="buttons" id="buttons"></div>
+        <script>
+            start()
+        </script>
+    </body>
+</html>
