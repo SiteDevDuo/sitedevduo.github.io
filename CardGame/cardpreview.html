@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link href="index.css" rel="stylesheet">
+        <script src="index.js">console.log("☻")</script>
+        <style>
+            body {
+                overflow: hidden;
+            }
+            .CardContainer {
+                border: 5px solid black;
+                display: inline-flexbox;
+                overflow: auto;
+                transform: translateX(-50%) translateY(-50%);
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 95%;
+                height: 95%;
+                padding: 10px;
+                border-radius: 5px;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            }
+            spacifier {
+                margin-left: 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            let a = document.createElement("div")
+            a.className="CardContainer"
+            setupdefaults().forEach((e)=>{
+                a.append(e)
+            })
+            document.body.append(a)
+        </script>
+    </body>
+</html>

@@ -74,7 +74,7 @@ function KillCard(item) {
     }
     setTimeout(() => {
         item.remove()
-    },1000)
+    },500)
 }
 function nextround() {
     Step++
@@ -149,6 +149,68 @@ function nextround() {
                 document.getElementById("leftcards").append(cardright)
                 document.getElementById("rightcards").append(cardleft)
             }
+            if (a == "Purification") {
+                let cardleft = document.getElementById("leftcards").childNodes
+                let cardright = document.getElementById("rightcards").childNodes
+                for (let index = 0; index < cardleft.length; index++) {
+                    if (cardleft.item(index).getAttribute("cardtags").split(",").includes("Devil"))
+                        cardleft.item(index).remove()
+                }
+                for (let index = 0; index < cardright.length; index++) {
+                    if (cardright.item(index).getAttribute("cardtags").split(",").includes("Devil"))
+                        cardright.item(index).remove()
+                }
+                for (let index = 0; index < actioncards.length; index++) {
+                    if (actioncards[index][4].includes("Devil"))
+                        actioncards.pop(index)
+                }
+                for (let index = 0; index < superactioncards.length; index++) {
+                    if (superactioncards[index][4].includes("Devil"))
+                        superactioncards.pop(index)
+                }
+                for (let index = 0; index < carddefaults.length; index++) {
+                    if (carddefaults[index][6].includes("Devil"))
+                        carddefaults.pop(index)
+                }
+            }
+            if (a == "Swap Deck") {
+                let cardleft = document.getElementById("leftcards")
+                let cardright = document.getElementById("rightcards")
+                temp = cardleft.innerHTML
+                cardleft.innerHTML = cardright.innerHTML
+                cardright.innerHTML = temp
+                // HEH You think you can cheat by putting the cards outside of their place??? not UNTIL I AM HERE!
+                let anticheatleft = document.getElementById("leftside").childNodes
+                let anticheatright = document.getElementById("rightside").childNodes
+                for (let i = 0; i < anticheatleft.length; i++) {
+                    if (anticheatleft.item(i).className != undefined && anticheatleft.item(i).className.split(" ").includes("card")) {
+                        let a = anticheatleft.item(i).cloneNode()
+                        a.innerHTML = anticheatleft.item(i).innerHTML
+                        cardright.append(a)
+                        anticheatleft.item(i).remove()
+                    }
+                }
+                for (let i = 0; i < anticheatright.length; i++) {
+                    if (anticheatright.item(i).className != undefined && anticheatright.item(i).className.split(" ").includes("card")) {
+                        let a = anticheatright.item(i).cloneNode()
+                        a.innerHTML = anticheatright.item(i).innerHTML
+                        cardleft.append(a)
+                        anticheatright.item(i).remove()
+                    }
+                }
+            }
+            if (a == "Cyberattack") {
+                let inv = document.getElementById("leftcards")
+                let allcards = document.getElementsByClassName("card")
+                for (let i = 0; i < allcards.length; i++) {
+                    if (allcards.item(i).getAttribute("cardtags") != null && allcards.item(i).getAttribute("cardtags").split(",").includes("Electronic")) {
+                        let a = allcards.item(i).cloneNode()
+                        a.innerHTML = allcards.item(i).innerHTML
+                        allcards.item(i).remove()
+                        inv.append(a)
+                    }
+                }
+            }
             if (a == "Molotov") {
                 let dealdmg = (dmg,obj)=>{
                     let b = showoffdamage(dmg)
@@ -214,6 +276,44 @@ function nextround() {
                 let cardright = document.getElementById("rightcards").childNodes.item(randomize(0,document.getElementById("rightcards").childNodes.length-1))
                 document.getElementById("leftcards").append(cardright)
                 document.getElementById("rightcards").append(cardleft)
+            }
+            if (a == "Swap Deck") {
+                let cardleft = document.getElementById("leftcards")
+                let cardright = document.getElementById("rightcards")
+                temp = cardleft.innerHTML
+                cardleft.innerHTML = cardright.innerHTML
+                cardright.innerHTML = temp
+                // HEH You think you can cheat by putting the cards outside of their place??? not UNTIL I AM HERE!
+                let anticheatleft = document.getElementById("leftside").childNodes
+                let anticheatright = document.getElementById("rightside").childNodes
+                for (let i = 0; i < anticheatleft.length; i++) {
+                    if (anticheatleft.item(i).className != undefined && anticheatleft.item(i).className.split(" ").includes("card")) {
+                        let a = anticheatleft.item(i).cloneNode()
+                        a.innerHTML = anticheatleft.item(i).innerHTML
+                        cardright.append(a)
+                        anticheatleft.item(i).remove()
+                    }
+                }
+                for (let i = 0; i < anticheatright.length; i++) {
+                    if (anticheatright.item(i).className != undefined && anticheatright.item(i).className.split(" ").includes("card")) {
+                        let a = anticheatright.item(i).cloneNode()
+                        a.innerHTML = anticheatright.item(i).innerHTML
+                        cardleft.append(a)
+                        anticheatright.item(i).remove()
+                    }
+                }
+            }
+            if (a == "Cyberattack") {
+                let inv = document.getElementById("rightcards")
+                let allcards = document.getElementsByClassName("card")
+                for (let i = 0; i < allcards.length; i++) {
+                    if (allcards.item(i).getAttribute("cardtags") != null && allcards.item(i).getAttribute("cardtags").split(",").includes("Electronic")) {
+                        let a = allcards.item(i).cloneNode()
+                        a.innerHTML = allcards.item(i).innerHTML
+                        allcards.item(i).remove()
+                        inv.append(a)
+                    }
+                }
             }
             if (a == "Robber") {
                 let b = loh.parentNode.cloneNode()
@@ -451,41 +551,50 @@ function nextround() {
     }
 
 }
-carddefaults = [ // Card behavior, Image, Name, Attack, Use, Health, Rarity(Weight(The Bigger = The Easier To Obtain))
-    ["damageful","pistol.png","Pistol",15,5,1,5],
-    ["damageful","shotgun.png","Shotgun",20,2,10,2],
-    ["damageful","uzi.png","UZI",10,50,10,4],
-    ["damageful","blaster.png","Blaster",12,20,10,2],
-    ["damageful","spear.png","Spear",14,6,3,4],
-    ["damageful","katana.png","Katana",15,3,15,5],
-    ["damageful","mace.png","Mace",12,8,5,4],
-    ["weapon","sword.png","Sword",8,"∞",10,8],
-    ["weapon","dagger.png","Dagger",5,"∞",15,9],
-    ["weapon","axe.png","Axe",10,"∞",8,7],
-    ["weapon","hammer.png","Hammer",15,"∞",2,5],
-    ["weapon","bat.png","Bat",8,"∞",5,10],
-    ["legendary","cannon.png","Cannon",35,1,15,2],
-    ["legendary","catapult.png","Catapult",30,3,10,3],
-    ["legendary","bazo.png","RPG",35,1,5,1],
-    ["legendary","fist.png","Firey Fist",15,"∞",15,1],
-    ["legendary","wand.png","Magic Wand",20,20,2,1],
-    ["legendary","reaper.png","Reaper",15,6,30,1],
-    ["legendary","demonclaw.png","Devil Claw",30,"∞",0,1], // The best weapon to use against Devil Armor I AM SUCH A STRATOGIAST GENIOS!
-    ["defensive","shield.png","Shield",1,"∞",30,6],
-    ["defensive","demon.png","Devil Armor",-5,20,100,1],
-    ["other","bow.png","Bow",5,32,20,5],
+carddefaults = [ // Card behavior, Image, Name, Attack, Use, Health, Rarity(Weight(The Bigger = The Easier To Obtain)), Tags
+    ["damageful","pistol.png","Pistol",15,5,1,["Gun","Ranged","Bullet"],10],
+    ["damageful","shotgun.png","Shotgun",20,2,10,["Gun","Ranged","Bullet"],4],
+    ["damageful","uzi.png","UZI",10,50,10,["Gun","Ranged","Bullet"],8],
+    ["damageful","blaster.png","Blaster",12,20,10,["Gun","Ranged","Electronic","Bullet"],4],
+    ["damageful","drone.png","Drone",10,50,10,["Ranged","Electronic","Bullet"],4],
+    ["damageful","spear.png","Spear",14,6,3,["Melee"],8],
+    ["damageful","katana.png","Katana",15,3,15,["Melee"],10],
+    ["damageful","mace.png","Mace",12,8,5,["Melee"],8],
+    ["weapon","sword.png","Sword",8,"∞",10,["Melee"],16],
+    ["weapon","dagger.png","Dagger",5,"∞",15,["Melee"],18],
+    ["weapon","axe.png","Axe",10,"∞",8,["Melee"],14],
+    ["weapon","hammer.png","Hammer",15,"∞",2,["Melee"],10],
+    ["weapon","bat.png","Bat",8,"∞",5,["Melee"],20],
+    ["legendary","cannon.png","Cannon",35,1,15,["Gun","Ranged"],4],
+    ["legendary","catapult.png","Catapult",30,3,10,["Gun","Ranged"],6],
+    ["legendary","bazo.png","RPG",35,1,5,["Gun","Ranged","Explosive"],2],
+    ["legendary","fist.png","Firey Fist",15,"∞",15,["Melee"],2],
+    ["legendary","wand.png","Magic Wand",20,20,2,["Magic"],2],
+    ["legendary","reaper.png","Reaper",15,6,30,["Melee","Ghost"],2],
+    ["legendary","missile.png","Missle",50,1,0,["Ranged","Explosive","Electronic"],1],
+    ["legendary","demonclaw.png","Devil Claw",30,"∞",0,["Devil","Melee"],2], // The best weapon to use against Devil Armor I AM SUCH A STRATOGIAST GENIOS!
+    ["defensive","shield.png","Shield",1,"∞",30,["Defensive"],12],
+    ["defensive","holyshield.png","Holy Shield",5,"∞",60,["Defensive","Holy"],4],
+    ["defensive","demon.png","Devil Armor",-5,20,100,["Defensive","Devil"],2],
+    ["other","bow.png","Bow",5,32,20,["Ranged"],10],
 ]
-actioncards = [ // Card Color, Image, Card Name, Card Description, Rarity(Weight(The Bigger = The Easier To Obtain))
-    ["aqua","robbery.png","Robber",`Secretly steal your enemy's offhand item after the battle O.o`,2],
-    ["orange","force_field.png","Barrier",`Creates a barrier around you which protects you from the next 20 damage`,5],
-    ["pink","reverse.png","Reverse",`Return the damage which your enemy was about to deal to you to itself`, 2],
-    ["crimson","earthquake.png","Earthquake",`Shakes the ground, dealing 5 damage to every held card by players`, 3],
-    ["firebrick","wastetime.png","Waste Time",`Once used no weapon deals any damage in the round being(tho they use durability)`, 4],
-    ["red","cocktail.png","Molotov",`deals 3 damage to every held card by player, and halves use counts of enemy `, 3],
-    ["lightblue","arrowrain.png","Arrow Rain",`deals 5 damage to every held enemy card`, 2],
-    ["chocolate","forceddeal.png","Forced Deal",`Swap a random card of yours with a random one from enemy(steal if enemy has none)`, 3],
-    ["darkred","sryinge.png","Healing Bullet",`All dealt damage in this round will be healing attack (both yours and the enemy)`, 2], // dont complain about sryinge I was too bored to fix it lol (jk it was intentional)
-    ["green","nuke.png","Nuke",`Demolishes all held weapons and deals 30 damage to both players`, 1],
+superactioncards = [ // Card Color, Image, Card Name, Card Description, Rarity(Weight(The Bigger = The Easier To Obtain)), Tags, <Limiter COMING SOON>
+    ["green","nuke.png","Nuke",`Demolishes all held weapons and deals 30 damage to both players`,["Area Damage"], 4],
+    ["red","swapcards.png","Swap Deck",`Swap all cards owned by both teams`,["Steal"], 2],
+    ["orange","hack.png","Cyberattack",`Hack all electronic and signal required cards and make them yours`,["Steal"], 7],
+    //["rgb(250,0,150)","bulletproof.png","Bulletproof",`Bullet Proof forever`,["Defensive"], 3],
+    ["tomato","sparkles.png","Purification",`Kill all devil in existance forever`,["Holy"], 4],
+]
+actioncards = [ // Card Color, Image, Card Name, Card Description, Rarity(Weight(The Bigger = The Easier To Obtain)), Tags, <Limiter COMING SOON>
+    ["aqua","robbery.png","Robber",`Secretly steal your enemy's offhand item after the battle O.o`,["Crime","Steal"],2],
+    ["orange","force_field.png","Barrier",`Creates a barrier around you which protects you from the next 20 damage`,["Defensive"],5],
+    ["pink","reverse.png","Reverse",`Return the damage which your enemy was about to deal to you to itself`,[], 2],
+    ["crimson","earthquake.png","Earthquake",`Shakes the ground, dealing 5 damage to every held card by players`,["Area Damage"], 3],
+    ["firebrick","wastetime.png","Waste Time",`Once used no weapon deals any damage in the round being(tho they use durability)`,["RoundModifier"], 4],
+    ["red","cocktail.png","Molotov",`deals 3 damage to every held card by player, and halves use counts of enemy`,["Area Damage","Disarm"], 3],
+    ["lightblue","arrowrain.png","Arrow Rain",`deals 5 damage to every held enemy card`,["Area Damage"], 2],
+    ["chocolate","forceddeal.png","Forced Deal",`Swap a random card of yours with a random one from enemy(steal if enemy has none)`,["Steal"], 3],
+    ["darkred","sryinge.png","Healing Bullet",`All dealt damage in this round will be healing attack (both yours and the enemy)`,["RoundModifier"], 2], // dont complain about sryinge I was too bored to fix it lol (jk it was intentional)
 ]
 function ObjCollision(obj1, obj2) {
     obj1.offsetBottom = obj1.offsetTop + obj1.offsetHeight;
@@ -493,6 +602,35 @@ function ObjCollision(obj1, obj2) {
     obj2.offsetBottom = obj2.offsetTop + obj2.offsetHeight;
     obj2.offsetRight = obj2.offsetLeft + obj2.offsetWidth;
     return !((obj1.offsetBottom < obj2.offsetTop) || (obj1.offsetTop > obj2.offsetBottom) || (obj1.offsetRight < obj2.offsetLeft) || (obj1.offsetLeft > obj2.offsetRight))
+}
+String.prototype.simplify = function () {
+    return this.toString().toLowerCase().replaceAll(" ","" )
+}
+function givecard(side="left",type="Weapon",cardname="Sword") { // side = "left"/"right" | type = "Weapon", "Action", "Super Action" | cardname = "Sword", "Earthquake", "Cyberattack", ...
+    let g = document.getElementById(`${side.simplify()}cards`)
+    switch (type.simplify()) {
+        case "weapon":
+            carddefaults.forEach((e)=>{
+                if (e[2].simplify() == cardname.simplify()) {
+                    g.append(cardgenerator(e[0],e[1],e[2],e[3],e[4],e[5],e[6]))
+                }
+            })
+            break;
+        case "action":
+            actioncards.forEach((e)=>{
+                if (e[2].simplify() == cardname.simplify()) {
+                    g.append(actioncardgen(e[0],e[1],e[2],e[3],e[4]))
+                }
+            })
+            break;
+        case "superaction":
+            superactioncards.forEach((e)=>{
+                if (e[2].simplify() == cardname.simplify()) {
+                    g.append(actioncardgen(e[0],e[1],e[2],e[3],e[4],true))
+                }
+            })
+            break;
+    }
 }
 function areacheck(item) {
     let a = document.getElementById("leftcards")
@@ -511,8 +649,8 @@ function areacheck(item) {
     else if(ObjCollision(item,d) && item.parentNode.className=="leftside" && item.getAttribute("CardType") == "Weapon" && d.childElementCount <= 1) appendage(item,d); 
     else if(ObjCollision(item,e) && item.parentNode.className=="rightside" && item.getAttribute("CardType") == "Weapon" && e.childElementCount <= 1) appendage(item,e); 
     else if(ObjCollision(item,f) && item.parentNode.className=="rightside" && item.getAttribute("CardType") == "Weapon" && f.childElementCount <= 1) appendage(item,f);
-    else if(ObjCollision(item,g) && item.parentNode.className=="leftside" && item.getAttribute("CardType") == "Action" && g.childElementCount <= 1) appendage(item,g);
-    else if(ObjCollision(item,h) && item.parentNode.className=="rightside" && item.getAttribute("CardType") == "Action" && h.childElementCount <= 1) appendage(item,h);
+    else if(ObjCollision(item,g) && item.parentNode.className=="leftside" && (item.getAttribute("CardType") == "Action" || item.getAttribute("CardType") == "Super Action") && g.childElementCount <= 1) appendage(item,g);
+    else if(ObjCollision(item,h) && item.parentNode.className=="rightside" && (item.getAttribute("CardType") == "Action" || item.getAttribute("CardType") == "Super Action") && h.childElementCount <= 1) appendage(item,h);
     else if(ObjCollision(item,a) && item.parentNode.className=="leftside") appendage(item,a);
     else if(ObjCollision(item,b) && item.parentNode.className=="rightside") appendage(item,b);
     stats()
@@ -577,20 +715,26 @@ function GetPercentage() {
     let a = 0
     let b = ""
     let c = 0
-    actioncards.forEach((e)=>{a += e[4]})
-    carddefaults.forEach((e)=>{c += e[6]})
-    carddefaults.forEach((e)=>{b+=`Weapon: ${e[2]} ${parseFloat(parseInt(e[6]/c*50000)/1000)}%\n`})
-    actioncards.forEach((e)=>{b+=`Action: ${e[2]} ${parseFloat(parseInt(e[4]/a*50000)/1000)}%\n`})
+    let p = 0
+    actioncards.forEach((e)=>{a += e[5]})
+    carddefaults.forEach((e)=>{c += e[7]})
+    superactioncards.forEach((e)=>{p += e[5]})
+    carddefaults.forEach((e)=>{b+=`Weapon: ${e[2]}\t\t>> ${parseFloat(parseInt(e[7]/c*50000)/1000)}%\n\n`})
+    actioncards.forEach((e)=>{b+=`Action: ${e[2]}\t\t>> ${parseFloat(parseInt(e[5]/a*49500)/1000)}%\n\n`})
+    superactioncards.forEach((e)=>{b+=`Super Action: ${e[2]}\t\t>> ${parseFloat(parseInt(e[5]/p*500)/1000)}%\n\n`})
     return b
 }
 function GetARandomCard() {
     let a = 0
     let b = ""
-    if (randomize(0,1) == 1){actioncards.forEach((e)=>{a += e[4]}); b = "Action"}
-    else{carddefaults.forEach((e)=>{a += e[6]}); b = "Weapon"}
+    let cc = randomize(0,200);
+    if (cc >= 100 && cc < 199){actioncards.forEach((e)=>{a += e[5]}); b = "Action"}
+    else if (cc < 100){carddefaults.forEach((e)=>{a += e[7]}); b = "Weapon"}
+    else {superactioncards.forEach((e)=>{a += e[5]}); b = "Super Action"}
     let c = randomize(0,a); StillNotSet = true
-    if (b == "Action") {actioncards.forEach((e)=>{if (c-e[4] > 0) c -= e[4]; else if(StillNotSet) { Cardio = actioncardgen(e[0],e[1],e[2],e[3]); StillNotSet = false;}})}
-    else {carddefaults.forEach((e)=>{if (c-e[6] > 0) c -= e[6]; else if(StillNotSet) {Cardio = cardgenerator(e[0],e[1],e[2],e[3],e[4],e[5]); StillNotSet = false;}})}
+    if (b == "Action") {actioncards.forEach((e)=>{if (c-e[5] > 0) c -= e[5]; else if(StillNotSet) { Cardio = actioncardgen(e[0],e[1],e[2],e[3],e[4]); StillNotSet = false;}})}
+    else if (b== "Weapon"){carddefaults.forEach((e)=>{if (c-e[7] > 0) c -= e[7]; else if(StillNotSet) {Cardio = cardgenerator(e[0],e[1],e[2],e[3],e[4],e[5],e[6]); StillNotSet = false;}})}
+    else {superactioncards.forEach((e)=>{if (c-e[5] > 0) c -= e[5]; else if(StillNotSet) { Cardio = actioncardgen(e[0],e[1],e[2],e[3],e[4],true); StillNotSet = false;}})}
     try{return Cardio} catch(e) {console.log(e); return "Somehow Something Somewhere breaksomely brokesome somethat somehow issome impossomble"}
 }
 function addnewcard(a) {
@@ -606,10 +750,15 @@ function addnewcard(a) {
     totalcards+=2;
     Limiter++;
 }
-function cardgenerator(rarity,image,name,atk,use,hp) {
+function cardgenerator(rarity="other",image="info.png",name="Untitled",atk=0,use=0,hp=0,TAGS=[]) {
     let a = document.createElement("div")
     a.setAttribute("CardType","Weapon")
     a.className = "card"
+    let qq = "";
+    TAGS.forEach((e)=>{
+        qq += "," + e
+    })
+    a.setAttribute("CardTags",qq.replace(",",""))
     let b = document.createElement("div")
     b.className = "card_upperpart"
     b.setAttribute("rarity",rarity)
@@ -647,15 +796,20 @@ function cardgenerator(rarity,image,name,atk,use,hp) {
     return a;
 }
 function getdetail(a) {
-    if (a.target.parentNode.getAttribute("CardType") == "Action") {
+    if (a.target.parentNode.getAttribute("CardType") == "Action" || a.target.parentNode.getAttribute("CardType") == "Super Action") {
         alert(`${a.target.parentNode.childNodes.item(0).childNodes.item(0).textContent} : ${a.target.parentNode.childNodes.item(2).childNodes.item(0).textContent}`)
     } else if (a.target.parentNode.getAttribute("CardType") == "Weapon") {
         alert(`${a.target.parentNode.childNodes.item(0).childNodes.item(1).textContent}\n⚔${a.target.parentNode.childNodes.item(1).childNodes.item(0).childNodes.item(1).textContent} ⚙${a.target.parentNode.childNodes.item(1).childNodes.item(1).childNodes.item(1).textContent} ♥${a.target.parentNode.childNodes.item(1).childNodes.item(2).childNodes.item(1).textContent}`)
     }
 }
-function actioncardgen(color,image,name,description) {
+function actioncardgen(color="white",image="info.png",name="Untitled",description="Lorem Ipsum",TAGS=[],SUPER=false) {
     let a = document.createElement("div")
     a.setAttribute("CardType","Action")
+    let qq = "";
+    TAGS.forEach((e)=>{
+        qq += "," + e
+    })
+    a.setAttribute("CardTags",qq.replace(",",""))
     a.className = "card";
     let b = document.createElement("div")
     b.className = "actioncard_upper"
@@ -677,6 +831,13 @@ function actioncardgen(color,image,name,description) {
     q.className = "cardoverlay"; q.setAttribute("onclick","selectme(event)");
     q.setAttribute("onmousedown","if (event.button == 1) getdetail(event)")
     a.append(q)
+    if (SUPER) {
+        a.setAttribute("CardType","Super Action")
+        a.className += " SPECIAL"
+        b.className = "actioncard_upper SUPER SPECIAL"
+        f.className = "actioncard_lower SUPER SPECIAL"
+        e.className += " SPECIALIMG"
+    }
     cardcount++
     return a
 }
@@ -698,14 +859,43 @@ function logocard() {
     cardcount++
     return p
 }
+console.log("♥")
 function setupdefaults() {
-    document.getElementById("technicalbackground").append(logocard())
+    let a = []
+    k = document.createElement("spacifier")
+    c = document.createElement("h1")
+    c.textContent = "Weapons:"
+    a.push(c)
+    a.push(k)
     carddefaults.forEach((e)=>{
-        document.getElementById("technicalbackground").append(cardgenerator(e[0],e[1],e[2],e[3],e[4],e[5]))
+        a.push(cardgenerator(e[0],e[1],e[2],e[3],e[4],e[5],e[6]))
     })
+    k = document.createElement("spacifier")
+    c = document.createElement("h1")
+    c.textContent = "Action:"
+    a.push(c)
+    a.push(k)
     actioncards.forEach((e)=>{
-        document.getElementById("technicalbackground").append(actioncardgen(e[0],e[1],e[2],e[3]))
+        a.push(actioncardgen(e[0],e[1],e[2],e[3],e[4]))
     })
+    k = document.createElement("spacifier")
+    c = document.createElement("h1")
+    c.textContent = "Super Action:"
+    a.push(c)
+    a.push(k)
+    superactioncards.forEach((e)=>{
+        a.push(actioncardgen(e[0],e[1],e[2],e[3],e[4],true))
+    })
+    k = document.createElement("spacifier")
+    c = document.createElement("h1")
+    c.textContent = "Secret Cards o.o:"
+    a.push(c)
+    a.push(k)
+    a.push(cardgenerator())
+    a.push(actioncardgen())
+    a.push(actioncardgen(undefined,undefined,undefined,undefined,undefined,true))
+    a.push(cardgenerator("legendary","https://cdn3.emoji.gg/emojis/5746-happy.png","April Fools",999,999,999))
+    return a
 }
 function showoffdamage(damage) {
     a = document.createElement("p")
@@ -762,7 +952,7 @@ function opensettings() {
 function infobutton() {
     let a = prompt(`A menu which I dont know what to name it!${enter}1. How to play${enter}2. Settings${enter}3. About`)
     if (a != null)
-    switch (a.toLowerCase().replaceAll(" ","")) {
+    switch (a.simplify()) {
         case "1": case "howtoplay":
             HowToPlay.split(`.${enter}`).forEach((e)=>{
                 alert(e)

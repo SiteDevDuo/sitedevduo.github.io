@@ -143,8 +143,8 @@
     margin-top: 10%;
     width: 90%;
     max-width: max-content;
-    filter: drop-shadow(1px 1px 1px rgb(50,50,50)) 
-    drop-shadow(-1px -1px 1px rgb(50,50,50));
+    filter: drop-shadow(0.1px 0.1px 0px rgb(0,0,0)) 
+    drop-shadow(-0.1px -0.1px 0px rgb(0,0,0));
 }
 .card_upperpart h2 {
     text-align: center;
@@ -320,6 +320,88 @@
     height: 80%;
     transform: rotateY(-360);
 }
+@keyframes superz {
+    0% {
+        background-image: radial-gradient(yellow ,gold, rgb(70,50,0)) !important;
+    }
+    50% {
+        background-image: radial-gradient(gold ,orange, rgb(70,50,0)) !important;
+    }
+    100% {
+        background-image: radial-gradient(yellow ,gold, rgb(70,50,0)) !important;
+    }
+}
+.SUPER {
+    background-image: radial-gradient(yellow ,gold, rgb(70,50,0)) !important;
+    animation-name: superz;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+}
+@keyframes glow {
+    1% {
+        box-shadow: none;
+    }
+    10% {
+        box-shadow: 0px 0px 2px 1px gold;
+    }
+    20% {
+        box-shadow: 0px 0px 4px 2px gold;
+    }
+    30% {
+        box-shadow: 0px 0px 6px 3px gold;
+    }
+    40% {
+        box-shadow: 0px 0px 8px 4px gold;
+    }
+    50% {
+        box-shadow: 0px 0px 10px 5px gold;
+    }
+    60% {
+        box-shadow: 0px 0px 8px 4px gold;
+    }
+    70% {
+        box-shadow: 0px 0px 6px 3px gold;
+    }
+    80% {
+        box-shadow: 0px 0px 4px 2px gold;
+    }
+    90% {
+        box-shadow: 0px 0px 2px 1px gold;
+    }
+    99% {
+        box-shadow: none;
+    }
+}
+@keyframes glowimg {
+    0% {
+        filter: drop-shadow(0px 0px 0px black);
+        transform: scale(1.1);
+    }
+    50% {
+        filter: drop-shadow(1px 1px 5px gold) 
+        drop-shadow(-1px -1px 5px gold) saturate(2);
+        transform: scale(1);
+    }
+    100% {
+        filter: drop-shadow(0px 0px 0px black);
+        transform: scale(1.1);
+    }
+}
+.SPECIALIMG {
+    animation-name: glowimg;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+}
+.SPECIAL {
+    animation-name: glow;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+}
 .resultoverlayleft div, .resultoverlayright div{
     margin: auto;
     display: inline-flex;
@@ -422,7 +504,7 @@
     font-size: 50px;
     transform: translateX(-50%) translateY(-50%);
     position: absolute;
-    color: ;
+    color: white;
     font-family: "Archivo", sans-serif;
 }
 .nxtrnd:hover {
