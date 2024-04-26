@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <style>
+            h1 {
+                position: absolute;
+                transform: translateX(-50%) translateY(-50%);
+                left: 50%;
+                top: 30%;
+                margin: 0;
+            }
+            h2 {
+                position: absolute;
+                margin: 0;
+                transform: translateX(-50%) translateY(-50%);
+                left: 50%;
+                top: 70%;
+            }
+            .right, .left {
+                position: absolute;
+                transition: 500ms;
+                transform: translateX(-50%) translateY(-50%);
+                top: 50%;
+                width: min(10vw,10vh);
+                height: min(10vw,10vh);
+                border-radius: 100px;
+                background-color: rgba(0,0,0,0.25);
+                border: 5px solid white;
+                color: white;
+                font-size: min(5vw,5vh);
+            }
+            .right:hover, .left:hover {
+                transition: 500ms;
+                background-color: rgba(0,0,0,0.5);
+            }
+            .right:active, .left:active {
+                transition: 500ms;
+                background-color: rgba(0,0,0,0.75);
+            }
+            .right {
+                left: 80%;
+            }
+            .left {
+                left: 20%;
+            }
+        </style>
+        <script src="PGE.js"></script>
+        <script>
+            Len = English_Words.length
+            CurNum = 0
+            function min(a,b) {
+                if (a < b) return a
+                return b
+            }
+            Width = window.innerWidth
+            Height = window.innerHeight
+            function randomize(min,max) {
+                return min + Math.floor(Math.random()*(max-min+1))
+            }
+            function GodDamnFirstLetterBRO(a) {return a.slice(0,1).toUpperCase() + a.slice(1)}
+            function nextword(old=false) {
+                if (CurNum >= Len)
+                    CurNum = 0
+                else
+                    CurNum+=1
+                if (old && CurNum > 1)
+                    CurNum -= 2
+                else if (old)
+                    CurNum = 0
+                document.body.style.backgroundImage = `radial-gradient(white,rgb(${randomize(150,255)},${randomize(150,255)},${randomize(150,255)}))`
+                document.getElementById("Eng").textContent = GodDamnFirstLetterBRO(English_Words[CurNum])
+                document.getElementById("Eng").style.fontSize = `${Width/10/(English_Words[CurNum].length)}ch`
+                document.getElementById("Per").textContent = Persian_Words[CurNum]
+                document.getElementById("Per").style.fontSize = `${Width/10/(Persian_Words[CurNum].length)}ch`
+            }
+        </script>
+    </head>
+    <body style="background-image: radial-gradient(white,darkgray);">
+        <button onclick="nextword()" class="right">></button>
+        <button onclick="nextword(true)" class="left"><</button>
+        <h1 id="Eng">Hello</h1>
+        <h2 id="Per">سلام</h2>
+    </body>
+</html>
