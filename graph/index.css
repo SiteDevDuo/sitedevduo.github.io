@@ -1,0 +1,35 @@
+body {
+    background-image: radial-gradient(white,gray);
+}
+h3 {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+canvas {
+    border: 5px dashed black;
+    background-image: radial-gradient(white,lightgray);
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: min(80vw,80vh);
+    height: min(80vw,80vh);
+    position: absolute;
+}
+.zoom {
+    width: 200px;
+}
+.functionpart {
+    width: 200px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 50px;
+}
+.graphinput button {
+    width: 30px;
+    height: 30px;
+    border: 5px solid black;
+    background-color: white;
+    transform: translateX(-120%);
+}
+.graphinput button:hover {
+    border: 5px solid gray;
+    background-color: white;
+}

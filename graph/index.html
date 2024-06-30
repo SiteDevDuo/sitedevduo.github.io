@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <script src="math.js"></script>
+        <script src="index.js"></script>
+        <link rel="stylesheet" href="index.css">
+        <title>Graphing Calculator</title>
+    </head>
+    <body>
+        <div class="graphinputs" id="graphinputs"><div class="graphinput"><input value="x^3" id="function_part" class="functionpart" graphcolor="blue"><button onclick="if (document.getElementById('graphinputs').childElementCount > 1) event.target.parentNode.remove()">X</button></div></div> 
+        <button class="add" onclick="let a = document.getElementById('graphinputs'); a.append(a.childNodes.item(0).cloneNode()); a.childNodes.item(a.childElementCount-1).innerHTML = a.childNodes.item(0).innerHTML ; a.childNodes.item(a.childElementCount-1).childNodes.item(0).setAttribute('graphcolor',`rgb(${randomize(0,200)},${randomize(0,200)},${randomize(0,200)})`)">+</button>
+        <br>
+        <h3 style="display: inline-block;">Zoom (Y Axis): </h3>
+        <input type="range" onchange="let test = event.target.value; if (test>0) zoommultiplier = 1/test; else if (test<0) zoommultiplier = -test; graphs();" min="-40" max="40" value="1" class="zoom">
+        <br>
+        <button onclick="graphs()">Draw Graphs</button>
+        <canvas width="500" height="500" id="graphboard"></canvas>
+        <p style="position: absolute; top:100%; transform: translateY(-200%);">Credit: Will Jefferson (Creator/Programmer), Math.js Library (Evaluation, Functionifying), Navid Abd (Idea man)</p>
+        <script>init(); graphreset();</script>
+    </body>
+</html>
